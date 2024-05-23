@@ -1,0 +1,7 @@
+---
+- name: Install bat apt
+  ansible.builtin.apt:
+    update_cache: true
+    name: bat
+    state: latest
+  become: true

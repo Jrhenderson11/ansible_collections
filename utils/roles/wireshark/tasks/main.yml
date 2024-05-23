@@ -1,0 +1,11 @@
+---
+- name: Add Wireshark repo
+  ansible.builtin.apt_repository:
+    repo: ppa:wireshark-dev/stable
+  become: true
+- name: Install wireshark apt
+  ansible.builtin.apt:
+    update_cache: true
+    name: wireshark
+    state: latest
+  become: true

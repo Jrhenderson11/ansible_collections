@@ -1,0 +1,5 @@
+---
+- name: Install libfuse
+  apt:
+    name: libfuse2t64
+  become: true

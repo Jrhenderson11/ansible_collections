@@ -1,0 +1,28 @@
+---
+- name: Download Installer
+  get_url:
+    url: https://downloads.nordcdn.com/apps/linux/install.sh
+    dest: "{{ tmp_script }}"
+    mode: '0755'
+    force: 'yes'
+    mode: +x
+
+- name: Run installer
+  command: "sh {{ tmp_script }}"
+  become: true
+
+- name: check
+  stat: 
+    path: /usr/bin/nordvpn
+
+- name: add user to nordvpn grp
+  user:
+    name: '{{ ansible_user_id }}'
+    groups: nordvpn
+    append: yes
+  become: true
+
+- name: Set nordlynx
+  shell: /usr/bin/nordvpn set technology nordlynx
+
+

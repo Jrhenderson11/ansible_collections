@@ -1,0 +1,6 @@
+---
+- hosts: "{{target|default('all')}}"
+  vars:
+    user: hendo
+  roles:
+   - roles-ansible.i3wm

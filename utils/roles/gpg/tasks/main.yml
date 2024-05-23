@@ -1,0 +1,6 @@
+---
+- name: gpg_apt
+  ansible.builtin.apt:
+    name: gpg
+    state: latest
+  become: true

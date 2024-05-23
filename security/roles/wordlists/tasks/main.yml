@@ -1,0 +1,37 @@
+---
+- name: Check /wordlists
+  stat:
+    path: /wordlists
+  register: wordlists_exists
+
+- name: mkdir wordlists
+  when: wordlists_exists.stat.isdir is not defined
+  file:
+    path: "{{ ansible_user_dir }}/tools/wordlists"
+    state: directory
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+
+- name: symlink /wordlists
+  when: wordlists_exists.stat.isdir is not defined
+  ansible.builtin.file:
+    src: /tools/wordlists
+    dest: /wordlists
+    state: link
+  become: true
+
+
+- name: SecLists
+  git:
+    repo: https://github.com/danielmiessler/SecLists.git
+    dest: /wordlists/SecLists
+
+- name: RockYou2021
+  git:
+    repo: https://gitlab.com/5amu/rockyou2021
+    dest: /wordlists/Rockyou2021
+
+- name: OneRule
+  get_url:
+    url: https://raw.githubusercontent.com/stealthsploit/OneRuleToRuleThemStill/main/OneRuleToRuleThemStill.rule
+    dest: /wordlists/OneRuleToRuleThemStill.rule

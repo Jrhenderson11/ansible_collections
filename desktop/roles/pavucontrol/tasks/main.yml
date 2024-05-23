@@ -1,0 +1,6 @@
+---
+- name: pavucontrol_apt
+  ansible.builtin.apt:
+    name: pavucontrol
+    state: latest
+  become: true

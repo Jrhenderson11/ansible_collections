@@ -1,0 +1,23 @@
+---
+- hosts: "{{target|default('all')}}"
+  roles:
+   - role: roles-ansible.i3wm
+     tags: i3wm
+   - role: zsh
+     tags: zsh
+   - role: make
+     tags: make
+   - role: oh_my_zsh
+     tags: oh_my_zsh
+   - role: pavucontrol
+     tags: pavucontrol
+   - role: arandr
+     tags: arandr
+   - role: autorandr
+     tags: autorandr
+   - role: appimage_support
+     tags: appimage_support
+   - role: dotfiles
+     tags: dotfiles
+   - role: remove_ubuntu_bloat
+     tags: remove_ubuntu_bloat

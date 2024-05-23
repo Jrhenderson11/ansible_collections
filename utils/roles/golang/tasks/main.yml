@@ -1,0 +1,16 @@
+- name: clean prev golang
+  shell: rm -rf /usr/local/go && 
+  ignore_errors: yes
+
+- name: Download Golang source
+  get_url:
+    url: https://go.dev/dl/go1.22.3.linux-amd64.tar.gz
+    dest: "{{ tmp_archive }}"
+ 
+- name: Unpack
+  shell: "tar -C /usr/local -xzf {{ tmp_archive }}"
+  become: true
+
+- name: Add go to path
+  shell: echo "export PATH=$PATH:/usr/local/go/bin" >> /etc/environment
+  become: true

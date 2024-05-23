@@ -1,0 +1,4 @@
+---
+- name: impacket
+  community.general.pipx:
+    name: impacket

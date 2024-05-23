@@ -1,0 +1,6 @@
+---
+- name: docker_apt
+  ansible.builtin.apt:
+    name: docker.io
+    state: latest
+  become: true

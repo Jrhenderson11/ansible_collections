@@ -1,0 +1,12 @@
+---
+- name: Add gping repo
+  become: true
+  shell: |
+    echo 'deb [signed-by=/usr/share/keyrings/azlux.gpg] https://packages.azlux.fr/debian/ bookworm main' | sudo tee /etc/apt/sources.list.d/azlux.list
+    curl -s https://azlux.fr/repo.gpg.key | gpg --dearmor | sudo tee /usr/share/keyrings/azlux.gpg > /dev/null
+
+- name: Install gping
+  apt:
+    name: gping
+    update_cache: true
+  become: true

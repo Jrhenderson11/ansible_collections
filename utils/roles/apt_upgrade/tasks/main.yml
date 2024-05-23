@@ -1,0 +1,5 @@
+---
+- name: Apt Upgrade
+  ansible.builtin.apt:
+    upgrade: full
+  become: true

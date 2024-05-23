@@ -1,0 +1,13 @@
+---
+- name: Download
+  git:
+    repo: https://github.com/phillipberndt/autorandr
+    dest: /tmp/autorandr
+    clone: yes
+    update: yes
+- name: Build
+  community.general.make:
+    chdir: /tmp/autorandr
+    target: install
+    jobs: 4
+  become: true

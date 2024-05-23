@@ -1,0 +1,5 @@
+---
+- name: Dust
+  community.general.cargo:
+    name:  du-dust
+

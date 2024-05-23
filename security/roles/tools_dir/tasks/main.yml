@@ -1,0 +1,45 @@
+---
+  - name: Make /home tools
+    file:
+        path: "{{ ansible_user_dir }}/tools"
+        state: directory
+        owner: "{{ ansible_user_id }}"
+        group: "{{ ansible_user_id }}"
+
+  - name: Make /tools
+    ansible.builtin.file:
+      src: "{{ ansible_user_dir }}/tools"
+      dest: /tools
+      state: link
+    become: true
+
+  - name: mkdir_tools web
+    file:
+      path: "{{ ansible_user_dir }}/tools/web"
+      state: directory
+      owner: "{{ ansible_user_id }}"
+      group: "{{ ansible_user_id }}"
+  - name: mkdir_tools passwords
+    file:
+      path: "{{ ansible_user_dir }}/tools/passwords"
+      state: directory
+      owner: "{{ ansible_user_id }}"
+      group: "{{ ansible_user_id }}"
+  - name: mkdir_tools scanners
+    file:
+      path: "{{ ansible_user_dir }}/tools/scanners"
+      state: directory
+      owner: "{{ ansible_user_id }}"
+      group: "{{ ansible_user_id }}"
+  - name: mkdir_tools wdlist
+    file:
+      path: "{{ ansible_user_dir }}/tools/wordlists"
+      state: directory
+      owner: "{{ ansible_user_id }}"
+      group: "{{ ansible_user_id }}"
+  - name: mkdir_tools rev
+    file:
+      path: "{{ ansible_user_dir }}/tools/reversing"
+      state: directory
+      owner: "{{ ansible_user_id }}"
+      group: "{{ ansible_user_id }}"

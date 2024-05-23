@@ -1,0 +1,49 @@
+---
+- hosts: "{{target|default('all')}}"
+  roles:
+   - role: firefox
+     tags: firefox
+   - role: cargo
+     tags: cargo
+   - role: golang
+     tags: golang
+   - role: python
+     tags: python
+   - role: gping
+     tags: gping
+   - role: duf
+     tags: duf
+   - role: dust
+     tags: dust
+   - role: ufw
+     tags: ufw
+   - role: openvpn
+     tags: openvpn
+   - role: nordvpn
+     tags: nordvpn
+   - role: docker
+     tags: docker
+   - role: tcpdump
+     tags: tcpdump
+   - role: wireshark
+     tags: wireshark
+   - role: apt_upgrade
+     tags: apt_upgrade
+   - role: gdb
+     tags: gdb
+   - role: sublime
+     tags: sublime
+   - role: tcptraceroute
+     tags: tcptraceroute
+   - role: drawio
+     tags: drawio
+   - role: btop  
+     tags: btop  
+   - role: dashboard
+     tags: dashboard
+   - role: gpg
+     tags: gpg
+   - role: bat
+     tags: bat
+   - role: locate
+     tags: locate

@@ -1,0 +1,6 @@
+---
+- name: install firefox
+  apt: 
+    name: firefox
+    update_cache: yes
+  become: true

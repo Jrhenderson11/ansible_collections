@@ -1,0 +1,6 @@
+---
+- name: DrawIO Snap Install
+  community.general.snap:
+    name: drawio
+    classic: true
+  become: true

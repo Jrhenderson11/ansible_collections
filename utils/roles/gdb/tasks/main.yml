@@ -1,0 +1,17 @@
+---
+- name: Install GDB apt
+  ansible.builtin.apt:
+    update_cache: true
+    name: gdb
+    state: latest
+  become: true
+
+- name: Download PEDA
+  git:
+    repo: https://github.com/longld/peda.git
+    dest: "{{ ansible_user_dir }}/peda"
+    clone: yes
+    update: yes
+
+- name: install PEDA
+  shell: "echo 'source {{ ansible_user_dir }}/peda/peda.py' >> {{ ansible_user_dir }}/.gdbinit"

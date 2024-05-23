@@ -1,0 +1,25 @@
+---
+- hosts: "{{target|default('all')}}"
+  roles:
+   - role: tools_dir
+     tags: tools_dir
+   - role: nmap
+     tags: nmap
+   - role: cutter
+     tags: cutter
+   - role: rr
+     tags: rr
+   - role: hashcat
+     tags: hashcat
+   - role: johnj
+     tags: johnj
+   - role: pwntools
+     tags: pwntools
+   - role: impacket
+     tags: impacket
+   - role: nullinux
+     tags: nullinux
+   - role: nxc
+     tags: nxc
+   - role: wordlists
+     tags: wordlists 

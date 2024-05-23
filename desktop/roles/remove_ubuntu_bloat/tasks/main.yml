@@ -1,0 +1,30 @@
+---
+- name: Remove bloat
+  become: true
+  ansible.builtin.apt:
+    state: absent
+    purge: yes
+    pkg:
+      - aisleriot
+      - brltty
+      - duplicity
+      - empathy*
+      - example-content
+      - gnome-accessibility-themes
+      - gnome-contacts
+      - gnome-mahjongg
+      - gnome-mines
+      - gnome-orca
+      - gnome-screensaver
+      - gnome-sudoku
+      - gnome-video-effects
+      - landscape-common
+      - libsane
+      - libsane-common
+      - python3-uno
+      - rhythmbox*
+      - sane-utils
+      - shotwell*
+      - telepathy*
+      - totem*
+      - printer-driver*

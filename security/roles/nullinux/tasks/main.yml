@@ -1,0 +1,8 @@
+---
+- name: Download Nullinux
+  git:
+    repo: https://github.com/m8sec/nullinux
+    dest: /tools/scanners/nullinux
+
+- name: Install Nullinux
+  command: sh /tools/scanners/nullinux/setup.sh

@@ -1,0 +1,15 @@
+---
+- name: Download duf source
+  git:
+    repo: https://github.com/muesli/duf.git
+    dest: "{{ tmp_dir }}"
+
+- name: build
+  ansible.builtin.command: go build
+  args:
+    chdir: "{{ tmp_dir }}"
+
+- name: install
+  ansible.builtin.command: go install
+  args:
+    chdir: "{{ tmp_dir }}"

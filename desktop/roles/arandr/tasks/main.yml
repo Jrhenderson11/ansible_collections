@@ -1,0 +1,6 @@
+---
+- name: arandr_apt
+  ansible.builtin.apt:
+    name: arandr
+    state: latest
+  become: true

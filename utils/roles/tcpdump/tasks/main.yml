@@ -1,0 +1,6 @@
+---
+- name: tcpdump_apt
+  ansible.builtin.apt:
+    name: tcpdump
+    state: latest
+  become: true

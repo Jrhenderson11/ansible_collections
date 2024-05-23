@@ -1,0 +1,100 @@
+---
+- name: check nmap version
+  command: zsh -c "(( $( nmap -V | head -n1 | cut -d' ' -f3 ) >= 7.95))"
+  register: nmap_version
+  ignore_errors: true
+  
+- name: Check GPG exists
+  when: nmap_version.rc != 0
+  stat:
+    path: /usr/bin/gpg
+  register: gpg_exists
+  ignore_errors: true
+  
+
+- name: install GPG
+  apt:
+    name: gpg
+  become: true
+  when: nmap_version.rc != 0 and gpg_exists != 0
+
+- name: download source
+  get_url: 
+     url:  "https://nmap.org/dist/nmap-7.95.tar.bz2"
+     dest: "{{ tmp_archive }}"
+  when: nmap_version.rc != 0
+
+- name: download key
+  get_url: 
+     url:  "https://svn.nmap.org/nmap/docs/nmap_gpgkeys.txt"
+     dest: "{{ tmp_key }}"
+  when: nmap_version.rc != 0
+
+- name: gpg import
+  shell: gpg --import {{ tmp_key }}
+  when: nmap_version.rc != 0
+
+- name: verify key fingerprint
+  shell: gpg --fingerprint nmap fyodor
+  register: fingerprints
+  when: nmap_version.rc != 0
+  failed_when: "'BB61 D057 C0D7 DCEF E730  996C 1AF6 EC50 3359 9B5F' not in fingerprints.stdout or '436D 66AB 9A79 8425 FDA0  E3F8 01AF 9F03 6B93 55D0' not in fingerprints.stdout"
+
+- name: Download signature
+  get_url: 
+     url:  "https://nmap.org/dist/sigs/nmap-7.95-2.x86_64.rpm.asc"
+     dest: "{{ tmp_fp }}"
+  when: nmap_version.rc != 0
+
+- name: Verify signature
+  shell: gpg --verify {{ tmp_fp }}
+  register: signature_result
+  when: nmap_version.rc != 0
+  failed_when: '"BAD" in signature_result'
+
+- name: Extract archive
+  when: nmap_version.rc != 0
+  unarchive:
+    src: "{{ tmp_archive }}"
+    dest: "{{ install_dir }}"
+    remote_src: yes
+    creates: "{{ install_dir }}/nmap-7.95"
+
+- name: Install requirements
+  when: nmap_version.rc != 0
+  apt:
+    pkg:
+      - libssl-dev
+      - libssh-dev
+      - libssh2-1-dev
+
+- name: Configure
+  when: nmap_version.rc != 0
+  command: "sh {{ install_dir }}/nmap-7.95/configure --without-zenmap"
+  args:
+    chdir: "{{ install_dir }}/nmap-7.95/"
+
+- name: build Nmap
+  when: nmap_version.rc != 0
+  community.general.make:
+    chdir: "{{ install_dir }}/nmap-7.95"
+    target: all
+    params: 
+      -s:
+    jobs: 4
+
+- name: Install
+  when: nmap_version.rc != 0
+  community.general.make:
+    chdir: "{{ install_dir }}/nmap-7.95"
+    target: install
+    params: 
+      -s:
+    jobs: 4
+  become: true
+
+- name: Clean
+  when: nmap_version.rc != 0
+  community.general.make:
+    chdir: "{{ install_dir }}/nmap-7.95"
+    target: distclean

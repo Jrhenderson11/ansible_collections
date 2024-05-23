@@ -1,0 +1,7 @@
+---
+- name: Install hashcat apt
+  ansible.builtin.apt:
+    update_cache: true
+    name: hashcat
+    state: latest
+  become: true

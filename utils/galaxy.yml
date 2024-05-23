@@ -1,0 +1,7 @@
+namespace: hendo
+name: utils
+version: 0.0.1
+readme: README.md
+authors: hendo
+dependencies:
+  "community.general": "*"

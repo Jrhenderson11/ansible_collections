@@ -1,0 +1,20 @@
+---
+- name: Install UFW apt
+  ansible.builtin.apt:
+    name: gping
+    state: latest
+  become: true
+- name: fw_config_default_deny
+  community.general.ufw:
+    default: deny
+    direction: incoming
+  become: true
+
+- name: fw_config_allow_htb
+  community.general.ufw:
+    rule: allow
+    proto: tcp
+    direction: in
+    interface: htb0
+    to_port: 1024:65535
+  become: true

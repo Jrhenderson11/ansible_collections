@@ -1,0 +1,24 @@
+---
+- hosts: all
+  become: true
+
+
+
+
+## DESKTOP
+
+
+## UTILS
+
+
+
+
+
+
+
+
+# metasploit
+# metasploit_url: "https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/templates/metasploit-framework-wrappers/msfupdate.erb"
+# metasploit_user: root
+# metasploit_msfdb: False
+

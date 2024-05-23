@@ -1,0 +1,7 @@
+---
+- name: Install locate apt
+  ansible.builtin.apt:
+    update_cache: true
+    name: plocate
+    state: latest
+  become: true

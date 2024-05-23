@@ -1,0 +1,18 @@
+---
+- name: Download
+  get_url: 
+     url:  "https://github.com/aristocratos/btop/releases/download/v1.3.2/btop-x86_64-linux-musl.tbz"
+     dest: "{{ tmp_archive }}"
+
+- name: Extract archive
+  unarchive:
+    src: "{{ tmp_archive }}"
+    dest: "/tmp"
+    remote_src: yes
+    creates: "{{ tmp_dir }}"
+- name: build btop
+  community.general.make:
+    chdir: "{{ tmp_dir }}"
+    target: install
+    jobs: 4
+  become: true

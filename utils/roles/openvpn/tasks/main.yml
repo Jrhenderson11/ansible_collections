@@ -1,0 +1,6 @@
+---
+- name: openvpn_apt
+  ansible.builtin.apt:
+    name: openvpn
+    state: latest
+  become: true

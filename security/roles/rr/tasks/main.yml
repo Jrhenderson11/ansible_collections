@@ -1,0 +1,63 @@
+---
+- name: Check installed
+  shell: command -v rr
+  ignore_errors: true
+  register: rr_exist
+
+- name: Install Dependencies
+  when: rr_exist.rc != 0
+  ansible.builtin.apt:
+    update_cache: true
+    state: latest
+    pkg:
+      - ccache
+      - cmake
+      - make
+      - g++-multilib
+      - gdb
+      - lldb
+      - pkg-config
+      - coreutils
+      - python3-pexpect
+      - manpages-dev
+      - git
+      - ninja-build
+      - capnproto
+      - libcapnp-dev
+      - zlib1g-dev
+  become: true
+
+- name: Make /tools/reversing/rr
+  when: rr_exist.rc != 0
+  file:
+      path: /tools/reversing/rr
+      state: directory
+      owner: "{{ ansible_user_id }}"
+      group: "{{ ansible_user_id }}"
+
+- name: Download RR
+  when: rr_exist.rc != 0
+  git:
+    repo: https://github.com/rr-debugger/rr.git
+    dest: /tools/reversing/rr
+
+- name: mkdir obj/
+  when: rr_exist.rc != 0
+  command: mkdir obj
+  ignore_errors: true
+
+- name: cmake
+  when: rr_exist.rc != 0
+  shell: |
+    cmake -DCMAKE_BUILD_TYPE=Release ../
+  args:
+    chdir: /tools/reversing/rr/obj
+
+- name: Install RR
+  when: rr_exist.rc != 0
+  community.general.make:
+    target: install
+    jobs: 4
+    chdir: /tools/reversing/rr/obj
+  become: true
+  

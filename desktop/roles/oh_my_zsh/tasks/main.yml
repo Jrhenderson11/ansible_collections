@@ -1,0 +1,34 @@
+
+---
+- name: remove previous OMZ
+  shell: "rm -rf {{ ansible_user_dir }}/.oh-my-zsh"
+
+- name: Download OMZ
+  get_url: 
+    url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+    dest: /tmp/omz_install.sh
+    mode: +x
+
+- name: Install OMZ
+  command: zsh /tmp/omz_install.sh --unattended
+
+- name: zsh-syntax-highlighting plugin
+  git: 
+    repo: https://github.com/zsh-users/zsh-syntax-highlighting
+    dest: "{{ ansible_user_dir }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
+
+- name: zsh-autosuggestions plugin
+  git: 
+    repo: https://github.com/zsh-users/zsh-autosuggestions
+    dest: "{{ ansible_user_dir }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+
+- name: zsh-completions plugin
+  git: 
+    repo: https://github.com/zsh-users/zsh-completions
+    dest: "{{ ansible_user_dir }}/.oh-my-zsh/custom/plugins/zsh-completions"
+
+- name: zsh-evalcache plugin
+  git: 
+    repo: https://github.com/mroth/evalcache
+    dest: "{{ ansible_user_dir }}/.oh-my-zsh/custom/plugins/evalcache
+

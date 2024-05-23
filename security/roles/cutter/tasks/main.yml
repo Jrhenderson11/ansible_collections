@@ -1,0 +1,15 @@
+---
+  - name: Make /tools/reversing/cutter
+    file:
+        path: /tools/reversing/cutter
+        state: directory
+        owner: "{{ ansible_user_id }}"
+        group: "{{ ansible_user_id }}"
+
+  - name: Download Cutter
+    get_url: 
+      url: https://github.com/rizinorg/cutter/releases/download/v2.3.4/Cutter-v2.3.4-Linux-x86_64.AppImage
+      dest: /tools/reversing/cutter
+
+  - name: Make Executable
+    shell: chmod +x /tools/reversing/cutter/Cutter*.AppImage

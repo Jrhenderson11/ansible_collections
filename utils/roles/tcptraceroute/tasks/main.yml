@@ -1,0 +1,7 @@
+---
+- name: Install tcptraceroute apt
+  ansible.builtin.apt:
+    update_cache: true
+    name: tcptraceroute
+    state: latest
+  become: true

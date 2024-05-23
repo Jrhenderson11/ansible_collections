@@ -1,0 +1,8 @@
+---
+- name: Install ZSH apt
+  apt:
+    name: zsh
+  become: true
+- name: Set default
+  shell: "chsh -s /usr/bin/zsh {{ ansible_user_id }}"
+  become: true

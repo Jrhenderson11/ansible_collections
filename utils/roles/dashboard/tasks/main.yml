@@ -1,0 +1,5 @@
+---
+- name: Clone dashboard
+  git:
+    repo: https://github.com/Jrhenderson11/dashboard
+    dest: "{{ ansible_user_dir }}/tools/dashboard"

@@ -1,0 +1,5 @@
+---
+- name: net-tools
+  apt:
+    name: net-tools
+  become: true

@@ -21,3 +21,5 @@
      tags: dotfiles
    - role: remove_ubuntu_bloat
      tags: remove_ubuntu_bloat
+   - role: dark-gtk
+     tags: dark-gtk

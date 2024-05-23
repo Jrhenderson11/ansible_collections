@@ -47,3 +47,7 @@
      tags: bat
    - role: locate
      tags: locate
+   - role: xclip
+     tags: xclip
+   - role: net-tools
+     tags: net-tools

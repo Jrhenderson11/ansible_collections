@@ -1,0 +1,6 @@
+---
+- name: set dark GTK theme
+  command: |
+    echo "[Settings]" > /home/{{ ansible_user_id }}/.config/gtk-3.0/settings.ini
+    echo "gtk-application-prefer-dark-theme=1" >> /home/{{ ansible_user_id }}/.config/gtk-3.0/settings.ini
+

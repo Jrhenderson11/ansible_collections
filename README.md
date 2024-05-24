@@ -67,7 +67,6 @@ improve checks before installing
 # metasploit_msfdb: False
 
 dunst desktop
-NetworkManager-gnome
 blueman-applet
 
 aws
@@ -93,20 +92,17 @@ bloodhound.py
 
 crunch
 
+ldapdomaindump
+pywerview
+chisel
+
 # sliver
 
 # WINDOWS!
-
-
-
-tldr
-
-prompt
-
-
 
 Windows:
  - desktop
  - security
  - dev
  - reverse
+

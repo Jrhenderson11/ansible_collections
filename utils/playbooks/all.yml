@@ -11,6 +11,8 @@
      tags: python
    - role: gping
      tags: gping
+   - role: jre
+     tags: jre
    - role: duf
      tags: duf
    - role: dust

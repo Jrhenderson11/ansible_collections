@@ -1,5 +1,5 @@
 namespace: hendo
-name: utils
+name: linux_utils
 version: 0.0.1
 readme: README.md
 authors: hendo

@@ -1,0 +1,20 @@
+# can be any item from the list
+vars:
+  image_name: "{{ ['Big_Sur_Simple.png', 'Lattice_pink.png', 'Solar.png', 'sunset_wide.png', 'Circuit_dark2.png', 'Lattice.png', 'splat2.png', 'tato.png', 'Circuit_dark.png', 'millimeterpapier-01.png', 'splat_blue.png', 'win.png', 'Circuit.png', 'polygonal-shape-4k.png', 'splat_blue_soft.png', 'Lattice_light.png', 'scales.png', 'star.png', 'Lattice_orange.png', 'siracha.png', 'Sunburst_Rays_2880x1800.png'] | random }}"
+
+- name: Upload image
+  ansible.windows.win_copy:
+    src: './images/{{ image_name }}'
+    dest: '{{ ansible_user_dir }}/Desktop'
+    owner: foo
+    group: foo
+    mode: '0644'
+
+- name: Set wallpaper
+  ansible.windows.win_regedit:
+    path: HKCU:\Control Panel\Desktop
+    name: wallpaper
+    data: '{{ ansible_user_dir }}\Desktop\{{ image_name }}'
+    type: string
+    state: present
+    hive: C:\Users\Default\NTUSER.dat

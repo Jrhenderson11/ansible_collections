@@ -1,0 +1,6 @@
+- name: Install flowmenu
+  win_chocolatey:
+    name: flow-launcher
+    state: latest
+  ignore_errors: yes 
+

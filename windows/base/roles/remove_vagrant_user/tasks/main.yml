@@ -1,0 +1,10 @@
+- name: Remove "vagrant" user
+  ignore_errors: yes
+  win_shell: |
+    $user = "vagrant"
+    $userExists = Get-LocalUser -Name $user -ErrorAction SilentlyContinue
+    if ($userExists) {
+      Remove-LocalUser -Name $user
+    }
+  args:
+    executable: powershell

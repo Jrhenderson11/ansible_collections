@@ -1,0 +1,19 @@
+  - name: Download script
+    ansible.windows.win_get_url:
+      url: https://github.com/Raphire/Win11Debloat/archive/refs/heads/master.zip
+      dest: '{{ ansible_user_dir }}/Desktop/win11debloat.zip'
+  
+  - name: Unzip
+    ansible.windows.win_powershell:
+      script: |
+        Expand-Archive {{ ansible_user_dir }}/Desktop/win11debloat.zip  {{ ansible_user_dir }}/Desktop/
+
+  - name: Clean zip
+    ansible.windows.win_file:
+      path: '{{ ansible_user_dir }}/Desktop/win11debloat.zip'
+      state: absent
+
+  - name: Run debloat
+    ansible.windows.win_powershell:
+      chdir:  '{{ ansible_user_dir }}/Desktop/Win11Debloat-master'
+      script: '.\Win11Debloat.ps1 -RunDefaults -DisableTelemetry -RemoveApps -DisableBing -Silent'

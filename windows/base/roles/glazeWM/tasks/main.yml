@@ -1,0 +1,20 @@
+- name: Install Zebar
+  win_chocolatey:
+    name: zebar
+    state: present
+
+- name: Install Glaze
+  win_chocolatey:
+    name: glazewm
+    state: present
+
+- name: Install config
+  ansible.windows.win_copy:
+    src: ./config.yaml
+    dest: '{{ ansible_user_dir }}\.glzr\glazewm\config.yaml'
+
+- name: Run on startup
+  win_shortcut:
+    src: 'C:\Program Files\glzr.io\GlazeWM\glazewm.exe'
+    dest: 'C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup\glazewm.lnk'
+  register: shortcut

@@ -1,0 +1,54 @@
+---
+- hosts: "{{target|default('all')}}"
+  roles:
+   # Base experience
+   - role: update_software
+     tags: update_software
+   - role: desktop_background
+     tags: desktop_background
+   - role: openssh_server
+     tags: openssh_server
+   - role: debloat
+     tags: debloat
+   - role: glazeWM
+     tags: glazeWM
+   # Tools
+   - role: choco
+     tags: choco
+   - role: winget
+     tags: winget
+   - role: sublime
+     tags: sublime
+   - role: vscode
+     tags: vscode
+   - role: terminal
+     tags: terminal
+   - role: firefox
+     tags: firefox
+   - role: git
+     tags: git
+   - role: msys2
+     tags: msys2
+   - role: mingw
+     tags: mingw
+   - role: windirstat
+     tags: windirstat
+   - role: python3
+     tags: python3
+   - role: flowlauncher
+     tags: flowlauncher
+   - role: docker_desktop
+     tags: docker_desktop
+     # Customisations
+   - role: customize_lock_screen
+     tags: customize_lock_screen
+   - role: customize_explorer
+     tags: customize_explorer
+   - role: powershell_profile
+     tags: powershell_profile
+   - role: disable_uac
+     tags: disable_uac
+   - role: remove_vagrant_user
+     tags: remove_vagrant_user
+   - role: reboot
+     tags: reboot

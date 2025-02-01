@@ -1,0 +1,4 @@
+- name: Install firefox
+  win_chocolatey:
+    name: firefox
+    state: present

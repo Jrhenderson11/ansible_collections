@@ -1,0 +1,15 @@
+---
+  - name: Install Windows updates
+    async: 5
+    poll: 0
+
+    win_updates:
+      log_path: '{{ ansible_user_dir }}\win_updates.log'
+      reboot: no
+      state: installed
+    tags: win
+  - name: Update additional software
+    win_chocolatey:
+      name: all
+      state: latest
+    tags: choco

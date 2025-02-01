@@ -1,0 +1,47 @@
+
+# - name: Install winget
+#   win_chocolatey:
+#     name: winget
+#     state: latest
+#   ignore_errors: yes
+
+- name: Download AppX package
+  ansible.windows.win_shell: |
+    Invoke-WebRequest -Uri https://github.com/microsoft/terminal/releases/download/v1.22.3232.0/Microsoft.WindowsTerminalPreview_1.22.3232.0_8wekyb3d8bbwe.msixbundle -Outfile .\WindowsTerminal.msixbundle
+
+- name: Install AppX package
+  ignore_errors: yes
+  ansible.windows.win_package:
+    provider: msix
+    path: WindowsTerminal.msixbundle
+    state: present
+
+- name: Install windows terminal
+  ansible.windows.win_shell: |
+    Get-AppxPackage *WindowsTerminal* -AllUsers
+
+- name: Remove file
+  ansible.windows.win_file:
+    path: WindowsTerminal.msixbundle
+    state: absent
+
+
+- name: Add to path
+  ansible.windows.win_path:
+    elements:
+      - '{{ ansible_user_dir }}\AppData\Local\Microsoft\WindowsApps\'
+
+# choco broken: https://github.com/mkevenaar/chocolatey-packages/issues/227
+  # win_chocolatey:
+  #   name: microsoft-windows-terminal
+  #   state: latest
+  # ignore_errors: yes 
+
+    # {{ ansible_user_dir }}\AppData\Local\Microsoft\WindowsApps\winget.exe install --id=Microsoft.WindowsTerminal -e --disable-interactivity --no-upgrade --silent
+
+
+# manual:
+#       Invoke-WebRequest -Uri https://github.com/microsoft/terminal/releases/download/v1.18.3181.0/Microsoft.WindowsTerminal_1.18.3181.0_8wekyb3d8bbwe.msixbundle
+#       Add-AppxPackage -Path .\Microsoft.WindowsTerminal_1.18.3181.0_8wekyb3d8bbwe.msixbundle
+
+# Get-AppxPackage *WindowsTerminal* -AllUsers

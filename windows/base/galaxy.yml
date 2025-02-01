@@ -1,0 +1,8 @@
+namespace: hendo
+name: windows_base
+version: 0.0.1
+readme: README.md
+authors: hendo
+# dependencies:
+#     "community.general": "*"
+#     "chocolatey.chocolatey": "*"

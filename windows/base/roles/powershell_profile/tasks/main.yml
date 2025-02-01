@@ -1,0 +1,9 @@
+- name: Make dir
+  ansible.windows.win_file:
+    path: '{{ ansible_user_dir }}/Documents/WindowsPowerShell'
+    state: directory
+
+- name: Copy profile
+  ansible.windows.win_copy:
+    src: ./profile.ps1
+    dest: '{{ ansible_user_dir }}\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1'

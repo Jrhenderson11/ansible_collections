@@ -9,12 +9,17 @@ Linux:
  - utils: A wide variety of Linux utilities
  - security: Secutity specific tooling, separated by category
 
+Windows:
+ - base: WinglazeWM for tiling, powershell profile, openssh server + some useful apps
+ - security: security specific tools
+ - malware: tools for checking malicious software
+
 Each collection has an `all.yml` playbook which installs all roles
 
 ## Requirements
 
  - ansible
- - root permisions on target system
+ - root/Administrator permisions on target system
 
 Ansible galaxy requirements:
 `ansible-galaxy install -r requirements.yml`
@@ -23,9 +28,15 @@ Ansible galaxy requirements:
 ## Install local collections
 
 ```sh
+cd linux
 ansible-galaxy collection install ./desktop
 ansible-galaxy collection install ./utils
 ansible-galaxy collection install ./security
+
+cd windows
+ansible-galaxy collection install ./base
+ansible-galaxy collection install ./security
+ansible-galaxy collection install ./malware
 ```
 
 ## Run playbooks
@@ -37,13 +48,41 @@ ansible --list-hosts -i localhost
 ansible-playbook foo.yml --check
 
 # Run playbook
-ansible-playbook -i inventory hendo.desktop.all all
+# ansible-playbook -i <inventory> <namespace.collection.playbook> <subgroup_of_inventory>
+ansible-playbook -i inventory hendo.linux_desktop.all
+ansible-playbook -i inventory hendo.linux_utils.all
+ansible-playbook -i inventory hendo.linux_security.all
 
 # Run role specificed by tag
-ansible-playbook hendo.desktop.all all -i inventory --tag zsh
-
+ansible-playbook hendo.linux_desktop.all -i inventory --tag zsh
 ```
 
+Windows:
+```sh
+# additional dependency
+pip install "pywinrm>=0.3.0"
+
+# Create inventory (assumes WinRM)
+export IP='192.168.56.21'
+
+export user="hendo"
+read -s pass"?Enter password:"
+
+cat > inventory.yml << EOF
+all:
+  hosts:
+    vm:
+      ansible_host: $IP
+      ansible_user: $user
+      ansible_password: $pass
+      ansible_connection: winrm
+      ansible_winrm_transport: ntlm
+      ansible_winrm_port: 5985
+EOF
+
+ansible-playbook -i inventory.yml hendo.windows_base.all all
+
+```
 
 ## Editing
 
@@ -59,21 +98,64 @@ function mkrole() {
 
 ## todo
 
+
 improve checks before installing
 
-# metasploit
+<!-- # metasploit
 # metasploit_url: "https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/templates/metasploit-framework-wrappers/msfupdate.erb"
 # metasploit_user: root
 # metasploit_msfdb: False
+ -->
 
 dunst desktop
 blueman-applet
 
-aws
+firefox extensions
+https://github.com/mozilla/policy-templates/blob/master/README.md
+
+```json
+{
+  "policies": {
+  	"FirefoxHome": {
+      "Search": true,
+      "TopSites": true,
+      "SponsoredTopSites": false,
+      "Highlights": false,
+      "Pocket": false,
+      "SponsoredPocket": false,
+      "Snippets": false,
+      "Locked": true
+    },
+    "ExtensionSettings": {
+      
+      "multi-account-containers@mozilla"
+      "uBlock0@raymondhill.net": {
+        "installation_mode": "force_installed",
+        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi"
+      },
+      "adguardadblocker@adguard.com": {
+        "installation_mode": "force_installed",
+        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/adguardadblocker@adguard.com/latest.xpi"
+      },
+      "https-everywhere@eff.org": {
+        "installation_mode": "allowed",
+        "updates_disabled": false
+      }
+    }
+  }
+}
+```
+
+# windows
+
+https://community.chocolatey.org/packages/Sudo
+sudo config --enable inline
+
 az cli
 
 tldr
 powerline prompt
+time in prompt
 
 trufflehog
 scoutsuite
@@ -92,17 +174,70 @@ bloodhound.py
 
 crunch
 
-ldapdomaindump
+ldapdomaindump + ldap2json
 pywerview
 chisel
 
-# sliver
+## C2
+havok / sliver
 
-# WINDOWS!
+## Windows
+PECloak
+gping (choco)
+mingw
 
-Windows:
- - desktop
- - security
- - dev
- - reverse
+supernova
+ - PE:
+    - https://github.com/petoolse/petools
+    - explorer suite https://ntcore.com/?page_id=388
 
+ - mailsniper
+ - rubeus
+ - seatbelt
+ - powerview
+ - sharpersist
+ - sharpup
+jre8
+
+ghostpack? obfuscated?
+
+### DEFENDER ZEBAR
+
+ - uses inbuilt providers +js written bars: hard
+
+### msys64 tools?
+
+https://www.msys2.org/
+https://packages.msys2.org/base
+
+
+{{ ansible_user_dir }}/.glzr/zebar
+{{ ansible_user_dir }}\.glzr\glazewm\config.yaml
+https://github.com/glzr-io/glazewm/blob/main/resources/assets/sample-config.yaml
+glazewm:
+ - smaller gaps?
+
+disble UAC
+
+https://github.com/steaksauce-/Ansible-Playbooks/blob/master/Windows/win-disable-remoteuac.yml
+
+
+powershell prompt w/date
+
+Pinned to taskbar:
+ - terminal
+ - firefox
+ - sublime
+
+TaskbarLayoutModification.xml 
+
+C:\WIndows\OEM\TaskbarLayoutModification.xml
+
+```xml
+
+```
+
+
+Terminal:
+
+$$

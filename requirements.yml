@@ -1,3 +1,7 @@
 # from galaxy
-- name: community.general
-- name: roles-ansible.i3wm
+roles:
+  - roles-ansible.i3wm
+  - deekayen.dotnet48
+collections:
+  - chocolatey.chocolatey
+  - community.general

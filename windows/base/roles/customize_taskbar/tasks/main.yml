@@ -1,0 +1,12 @@
+
+- name: Copy XML
+  ansible.windows.win_copy:
+    src: ./TaskbarLayoutModification.xml
+    dest: 'C:\Windows\TaskbarLayoutModification.xml'
+
+- name: Disable Configure registry key
+  ansible.windows.win_regedit:
+    path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer
+    name: LayoutXMLPath
+    data: 'C:\Windows\TaskbarLayoutModification.xml'
+    type: dword

@@ -1,0 +1,13 @@
+---
+- hosts: "{{target|default('all')}}"
+  roles:
+   - role: burp
+     tags: burp
+   - role: process_hacker
+     tags: process_hacker
+   - role: sysinternals
+     tags: sysinternals
+   - role: wireshark
+     tags: wireshark
+   - role: wordlists
+     tags: wordlists

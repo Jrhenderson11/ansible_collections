@@ -1,0 +1,4 @@
+- name: Install burp
+  win_chocolatey:
+    name: burp-suite-pro-edition
+    state: present

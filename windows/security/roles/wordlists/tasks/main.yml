@@ -1,0 +1,5 @@
+- name: Wordlists
+  git: 
+    repo: https://github.com/danielmiessler/SecLists/
+    dest: '{{ ansible_user_dir }}/Desktop'
+    state: latest

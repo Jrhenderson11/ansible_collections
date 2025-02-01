@@ -1,0 +1,10 @@
+- name: Install winget
+  win_chocolatey:
+    name: winget
+    state: latest
+  ignore_errors: yes 
+
+- name: Add to path
+  ansible.windows.win_path:
+    elements:
+      - '%AppData%\Local\Microsoft\WindowsApps\'

@@ -1,0 +1,8 @@
+- name: Install sublime
+  win_chocolatey:
+    name: sublimetext3
+    state: present
+- name: Add to path
+  ansible.windows.win_path:
+    elements:
+      - 'C:\Program Files\Sublime Text 3'

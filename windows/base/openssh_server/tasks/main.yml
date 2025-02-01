@@ -1,0 +1,49 @@
+---
+SSHD_SERVICE_CONFIG_FILE_PATH: ''
+PUBLIC_SSH_KEY_LOCAL_PATH: '/home/examples/id_rsa.pub'
+PUBLIC_SSH_KEY_LOCAL_FILE_NAME: "{{ PUBLIC_SSH_KEY_LOCAL_PATH.split('/')[-1] }}"
+WORKING_DIRECTORY: 'C:\ansible_openssh'
+OPENSSH_PORT: 22
+OPENSSH_CLIENT_WINDOWS_CAPABILITY_NAME: 'OpenSSH.Client~~~~0.0.1.0'
+OPENSSH_SERVER_WINDOWS_CAPABILITY_NAME: 'OpenSSH.Server~~~~0.0.1.0'
+---
+- name: Installing OpenSSH.Client and OpenSSH.Server 
+  ansible.windows.win_shell: |
+    Add-WindowsCapability -Online -Name '{{ OPENSSH_CLIENT_WINDOWS_CAPABILITY_NAME }}'
+    Add-WindowsCapability -Online -Name '{{ OPENSSH_SERVER_WINDOWS_CAPABILITY_NAME }}'
+
+- name: Setting initial config for OpenSSH.Server service (sshd)
+  ansible.windows.win_service:
+    name: sshd
+    state: "{{ item.state }}"
+  loop: 
+    - { state: started }
+    - { state: stopped }
+
+- name: Setting OpenSSH.Server Firewall Rule
+  community.windows.win_firewall_rule:
+    name: OpenSSH-Server-In-TCP
+    localport: "{{ OPENSSH_PORT }}"
+    action: allow
+    direction: in
+    enabled: yes
+    protocol: tcp
+
+- name: Setting properties for sshd-config
+  community.windows.win_lineinfile:
+    path: "C:\ProgramData\ssh\sshd_config"
+    backrefs: yes
+    regexp: '{{ item.regexp }}'
+    line: '{{ item.line }}'
+  loop:
+    - { regexp: '^#Port 22', line: 'Port {{ OPENSSH_PORT }}' }
+    - { regexp: '^#PasswordAuthentication yes', line: 'PasswordAuthentication no' }
+
+- name: Restart and set sshd and ssh-agent services
+  ansible.windows.win_service:
+    name: "{{ item.name }}"
+    state: started
+    start_mode: auto
+  loop:
+  - { name: sshd }
+  - { name: ssh-agent}

@@ -1,0 +1,7 @@
+- name: Run basic PowerShell script
+  ansible.windows.win_powershell:
+    script: |
+      install-module -Name Azure -Scope CurrentUser -Confirm:$false
+      install-module -Name AzureAD -Scope CurrentUser -Confirm:$false
+      install-module -Name Microsoft.Graph -Scope CurrentUser -Confirm:$false
+      install-module -Name Maester -Scope CurrentUser -Confirm:$false

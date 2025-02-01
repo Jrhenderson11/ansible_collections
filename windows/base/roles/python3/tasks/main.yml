@@ -1,0 +1,19 @@
+- name: Install Python 3.11
+  win_chocolatey:
+    name: python311
+    state: present
+    choco_args:
+      - --params "/InstallDir:C:\Program Files (x86)\Python3.11"
+
+- name: Install Python 3.8
+  win_chocolatey:
+    name: python38
+    state: present
+    choco_args:
+      - --params "/InstallDir:C:\Program Files (x86)\Python3.8"
+
+- name: Add to path
+  ansible.windows.win_path:
+    elements:
+      - '{{ ansible_user_dir }}\AppData\Roaming\Python\Python38\Script'
+      - '{{ ansible_user_dir }}\AppData\Roaming\Python\Python311\Script'

@@ -1,0 +1,4 @@
+- name: Install mingw
+  win_chocolatey:
+    name: mingw
+    state: present

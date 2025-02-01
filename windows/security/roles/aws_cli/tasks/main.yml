@@ -1,0 +1,4 @@
+- name: Install aws CLI
+  win_chocolatey:
+    name: awscli
+    state: present

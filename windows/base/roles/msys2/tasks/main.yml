@@ -1,0 +1,4 @@
+- name: Install MSYS
+  win_chocolatey:
+    name: msys2
+    state: present

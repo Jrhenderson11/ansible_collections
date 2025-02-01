@@ -1,0 +1,4 @@
+- name: Install Sysinternals
+  win_chocolatey:
+    name: sysinternals
+    state: present

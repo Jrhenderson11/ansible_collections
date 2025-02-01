@@ -1,0 +1,5 @@
+- name: Install Windirstat
+  win_chocolatey:
+    name: windirstat
+    state: present
+

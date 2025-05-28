@@ -21,6 +21,8 @@
      tags: sublime
    - role: vscode
      tags: vscode
+   - role: vsstudio
+     tags: vsstudio
    - role: terminal
      tags: terminal
    - role: firefox

@@ -53,8 +53,14 @@ ansible-playbook -i inventory hendo.linux_desktop.all
 ansible-playbook -i inventory hendo.linux_utils.all
 ansible-playbook -i inventory hendo.linux_security.all
 
-# Run role specificed by tag
+ansible-playbook -i inventory hendo.windows_base.all
+ansible-playbook -i inventory hendo.windows_security.all
+ansible-playbook -i inventory hendo.windows_malware.all
+
+# Run / skip role specificed by tag
 ansible-playbook hendo.linux_desktop.all -i inventory --tag zsh
+ansible-playbook hendo.linux_desktop.all -i inventory --skip-tags zsh
+
 ```
 
 Windows:
@@ -80,7 +86,7 @@ all:
       ansible_winrm_port: 5985
 EOF
 
-ansible-playbook -i inventory.yml hendo.windows_base.all all
+ansible-playbook -i inventory.yml hendo.windows_base.all
 
 ```
 
@@ -241,3 +247,22 @@ C:\WIndows\OEM\TaskbarLayoutModification.xml
 Terminal:
 
 $$
+
+diceware
+https://github.com/mermaid-js/mermaid-cli
+hcxtools
+macchanger
+python3-virtualenv
+hydra (pw-inspector)
+
+AALIASES:
+https://github.com/dandavison/delta
+
+avred
+yetanotherobfuscator
+
+ilspy
+dnspi
+yara
+
+fix defender?

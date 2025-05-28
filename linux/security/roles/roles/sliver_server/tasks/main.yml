@@ -1,0 +1,11 @@
+- name: Install Sliver
+    shell: |
+      curl https://sliver.sh/install|sudo bash
+    become: true
+  
+- name: Add hendo operator
+  shell: |
+    sliver-server operator --name hendo --lhost 127.0.0.1 --save '{{ ansible_user_home }}/hendo_sliver.cfg'
+
+
+

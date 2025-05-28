@@ -35,3 +35,8 @@
   get_url:
     url: https://raw.githubusercontent.com/stealthsploit/OneRuleToRuleThemStill/main/OneRuleToRuleThemStill.rule
     dest: /wordlists/OneRuleToRuleThemStill.rule
+
+- name: Google 1000
+
+
+- name: Wikipedia

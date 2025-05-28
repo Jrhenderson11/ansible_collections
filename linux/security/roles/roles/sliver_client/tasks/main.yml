@@ -1,0 +1,36 @@
+
+
+- name: Clone Sliver-client
+  git:
+    repo: "git@github.com:BishopFox/sliver.git"
+    dest: "/tools/sliver"
+    update: yes
+
+
+- name: Build client
+    shell: |
+      cd /tools/sliver
+      make
+
+    become: true
+
+- name: Add to PATH
+
+- name: Clone Sliver-gui
+  git:
+    repo: "https://github.com/omaramin17/sliver-gui"
+    dest: "/tools/sliver-gui"
+    update: yes
+
+- name: build gui
+    shell: |
+      cd /tools/sliver-gui
+      npm install
+      cd main/workers/worker && npm install && cd ../../..
+      npm install -g electron-packager
+      npm install -g @angular/cli
+      npm run electron:local
+
+    become: true
+
+

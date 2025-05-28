@@ -1,0 +1,4 @@
+---
+- name: updog
+  community.general.pipx:
+    name: updog

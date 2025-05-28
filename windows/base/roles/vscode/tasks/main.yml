@@ -2,3 +2,4 @@
   win_chocolatey:
     name: vscode
     state: present
+    timeout: 5000

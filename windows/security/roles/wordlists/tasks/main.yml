@@ -1,5 +1,10 @@
 - name: Wordlists
-  git: 
-    repo: https://github.com/danielmiessler/SecLists/
-    dest: '{{ ansible_user_dir }}/Desktop'
-    state: latest
+  ansible.windows.win_get_url:
+    url: https://github.com/danielmiessler/SecLists/archive/refs/heads/master.zip
+    dest: '{{ ansible_user_dir }}/Desktop/Seclists.zip'
+
+- name: Unzip
+  ansible.windows.win_powershell:
+    script: |
+      Expand-Archive {{ ansible_user_dir }}/Desktop/Seclists.zip  {{ ansible_user_dir }}/Desktop/
+

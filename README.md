@@ -104,6 +104,35 @@ function mkrole() {
 
 ## todo
 
+with profile:
+Install-Module -Name PSReadLine -Force -SkipPublisherCheck
+
+```
+Set-PSReadLineOption -PredictionSource History
+Set-PSReadLineOption -PredictionViewStyle Inline
+Set-PSReadLineOption -Colors @{ InlinePrediction = "$([char]0x1b)[90m" } # Gray color
+
+```
+%LOCALAPPDATA%\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json
+
+```
+$settingsPath = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminalPreview_8wekyb3d8bbwe\LocalState\settings.json"
+$settings = Get-Content -Path $settingsPath -Raw | ConvertFrom-Json
+
+$newKeyBinding = @{
+    command = "closeTab"
+    keys    = "ctrl+w"
+}
+
+$settings.actions += $newKeyBinding
+$settings | ConvertTo-Json -Depth 32 | Set-Content -Path $settingsPath -Force
+
+
+```
+
+ZEBAR defender
+
+hide desktop apps
 
 improve checks before installing
 
@@ -265,4 +294,5 @@ ilspy
 dnspi
 yara
 
-fix defender?
+SSH windows
+Get-Service -Name ssh-agent | Set-Service -StartupType Manual

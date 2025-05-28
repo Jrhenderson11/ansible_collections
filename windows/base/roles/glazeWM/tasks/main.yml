@@ -1,12 +1,27 @@
 - name: Install Zebar
-  win_chocolatey:
-    name: zebar
+  ansible.windows.win_shell: |
+    Invoke-WebRequest -Uri https://github.com/glzr-io/zebar/releases/download/v2.7.0/zebar-v2.7.0-opt1-x64.msi -OutFile '{{ ansible_user_dir }}/Downloads/zebar.msi'
+
+
+- name: Install Zebar package
+  ignore_errors: yes
+  ansible.windows.win_package:
+    provider: msi
+    path: '{{ ansible_user_dir }}/Downloads/zebar.msi'
     state: present
+
+
+
 
 - name: Install Glaze
   win_chocolatey:
     name: glazewm
     state: present
+
+- name: Create glaze directory structure
+  ansible.windows.win_file:
+    path: '{{ ansible_user_dir }}\.glzr\glazewm\'
+    state: directory
 
 - name: Install config
   ansible.windows.win_copy:

@@ -2,3 +2,16 @@
   win_chocolatey:
     name: git
     state: present
+
+- name: Set SSH Agent service to start automatically
+  win_service:
+    name: ssh-agent
+    start_mode: auto
+    state: started
+
+- name: Set GIT_SSH environment variable system-wide
+  win_environment:
+    name: GIT_SSH
+    value: "C:\\Windows\\System32\\OpenSSH\\ssh.exe"
+    level: machine
+    state: present

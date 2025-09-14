@@ -252,7 +252,6 @@ https://github.com/glzr-io/glazewm/blob/main/resources/assets/sample-config.yaml
 glazewm:
  - smaller gaps?
 
-disble UAC
 
 https://github.com/steaksauce-/Ansible-Playbooks/blob/master/Windows/win-disable-remoteuac.yml
 
@@ -294,5 +293,5 @@ ilspy
 dnspi
 yara
 
-SSH windows
-Get-Service -Name ssh-agent | Set-Service -StartupType Manual
+
+https://github.com/kobake/mlocate32

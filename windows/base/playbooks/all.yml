@@ -17,6 +17,8 @@
      tags: choco
    - role: winget
      tags: winget
+   - role: dotnet
+     tags: dotnet
    - role: sublime
      tags: sublime
    - role: vscode

@@ -1,8 +1,29 @@
+
 - name: Install dotnet
   win_chocolatey:
     name: dotnet4.6.1
-    state: present
+    state: latest
+
 - name: Add to path
   ansible.windows.win_path:
     elements:
      - 'C:\Windows\Microsoft.NET\Framework\v4.0.30319\'
+
+- name: Install .NET SDK (latest version)
+  win_chocolatey:
+    name: dotnet-sdk
+    state: present
+    params: "-y"
+
+- name: Download .NET 4.8.1 Developer Pack
+  win_get_url:
+    url: https://dotnet.microsoft.com/en-us/download/dotnet-framework/thank-you/net481-developer-pack-offline-installer
+    dest: C:\Windows\Temp\ndp481-devpack-enu.exe
+
+- name: Install .NET 4.8.1 Developer Pack
+  win_command: C:\Windows\Temp\ndp481-devpack-enu.exe /quiet /norestart
+
+
+- name: Add nuget source
+  win_command: >
+    dotnet nuget add source https://api.nuget.org/v3/index.json -n nuget.org

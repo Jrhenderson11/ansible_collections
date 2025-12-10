@@ -3,6 +3,8 @@
   roles:
    - role: roles-ansible.i3wm
      tags: i3wm
+   - role: background
+     tags: i3wm
    - role: zsh
      tags: zsh
    - role: make

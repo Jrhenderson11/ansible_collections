@@ -6,12 +6,17 @@
     state: latest
   become: true
 
-- name: Download PEDA
+- name: history remove-duplicates
+  copy:
+    content: "set history remove-duplicates"
+    dest: "{{ ansible_user_dir }}/.gdbinit"
+
+- name: Download PWNDBG
   git:
-    repo: https://github.com/longld/peda.git
-    dest: "{{ ansible_user_dir }}/peda"
+    repo: https://github.com/pwndbg/pwndbg.git
+    dest: "{{ ansible_user_dir }}/pwndbg"
     clone: yes
     update: yes
 
-- name: install PEDA
-  shell: "echo 'source {{ ansible_user_dir }}/peda/peda.py' >> {{ ansible_user_dir }}/.gdbinit"
+- name: install PWNDBG
+  shell: "{{ ansible_user_dir }}/pwndbg/setup.sh"

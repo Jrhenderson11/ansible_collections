@@ -33,6 +33,8 @@
      tags: git
    - role: msys2
      tags: msys2
+   - role: gnu_coreutils
+     tags: gnu_coreutils
    - role: mingw
      tags: mingw
    - role: windirstat

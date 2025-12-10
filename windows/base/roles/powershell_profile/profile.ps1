@@ -53,3 +53,4 @@ New-ALias which where.exe
 New-Alias xxd format-hex
 New-Alias f explorer.exe
 New-Alias gcl git clone
+git config --global alias.sta status

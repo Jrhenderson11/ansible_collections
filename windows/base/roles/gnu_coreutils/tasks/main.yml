@@ -1,0 +1,12 @@
+- name: Install GNU coreutils
+  win_chocolatey:
+    name: gnuwin32-coreutils.install
+    state: latest
+  ignore_errors: yes 
+
+- name: Add to path
+  ansible.windows.win_path:
+    elements:
+      - 'C:\Program Files (x86)\GnuWin32\bin'
+
+'

@@ -30,5 +30,4 @@
 - name: zsh-evalcache plugin
   git: 
     repo: https://github.com/mroth/evalcache
-    dest: "{{ ansible_user_dir }}/.oh-my-zsh/custom/plugins/evalcache
-
+    dest: "{{ ansible_user_dir }}/.oh-my-zsh/custom/plugins/evalcache"

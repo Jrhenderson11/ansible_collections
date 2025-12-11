@@ -1,0 +1,14 @@
+---
+  - name: Make /home tools
+    file:
+        path: "{{ ansible_user_dir }}/tools"
+        state: directory
+        owner: "{{ ansible_user_id }}"
+        group: "{{ ansible_user_id }}"
+
+  - name: Make /tools
+    ansible.builtin.file:
+      src: "{{ ansible_user_dir }}/tools"
+      dest: /tools
+      state: link
+    become: true

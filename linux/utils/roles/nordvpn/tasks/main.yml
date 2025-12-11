@@ -1,28 +1,39 @@
 ---
-- name: Download Installer
-  get_url:
-    url: https://downloads.nordcdn.com/apps/linux/install.sh
-    dest: "{{ tmp_script }}"
-    mode: '0755'
-    force: 'yes'
-    mode: +x
+- name: check if nordvpn is installed
+  shell: command -v nordvpn
+  register: nordvpn_exists
+  ignore_errors: true
+  failed_when: false
+  changed_when: false
 
-- name: Run installer
-  command: "sh {{ tmp_script }}"
-  become: true
+- name: install
+  when: nordvpn_exists.rc != 0
+  block:
 
-- name: check
-  stat: 
-    path: /usr/bin/nordvpn
+  - name: Download Installer
+    get_url:
+      url: https://downloads.nordcdn.com/apps/linux/install.sh
+      dest: "{{ tmp_script }}"
+      mode: '0755'
+      force: 'yes'
+      mode: +x
 
-- name: add user to nordvpn grp
-  user:
-    name: '{{ ansible_user_id }}'
-    groups: nordvpn
-    append: yes
-  become: true
+  - name: Run installer
+    command: "echo 'y' | sh {{ tmp_script }}"
+    become: true
 
-- name: Set nordlynx
-  shell: /usr/bin/nordvpn set technology nordlynx
+  - name: check
+    stat: 
+      path: /usr/bin/nordvpn
+
+  - name: add user to nordvpn grp
+    user:
+      name: '{{ ansible_user_id }}'
+      groups: nordvpn
+      append: yes
+    become: true
+
+  - name: Set nordlynx
+    shell: /usr/bin/nordvpn set technology nordlynx
 
 

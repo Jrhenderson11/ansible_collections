@@ -1,0 +1,40 @@
+- name: hexdiff_apt
+  ansible.builtin.apt:
+    name:
+      - hexdiff
+    state: present
+    update_cache: true
+  become: true
+
+- name: hobbits
+  block:
+
+  - name: install lib requirements
+    ansible.builtin.apt:
+      name:
+        - patchelf 
+        - libusb-1.0-0-dev 
+        - libpcap-dev 
+        - qtbase5-dev 
+        - qtchooser 
+        - qt5-qmake 
+        - qtbase5-dev-tools 
+        - python3-dev 
+        - ninja-build 
+        - cmake 
+        - g++
+      state: present
+      update_cache: true
+    become: true
+
+  - name: Download hobbits
+    git:
+      repo: https://github.com/Mahlet-Inc/hobbits.git
+      dest: "{{ ansible_user_dir }}/tools/hobbits"
+      clone: yes
+      update: yes
+
+  - name: install hobbits
+    shell: 
+      cmd: "cmake -G Ninja -B build .; cmake --build build"
+      chdir: "{{ ansible_user_dir }}/tools/hobbits"

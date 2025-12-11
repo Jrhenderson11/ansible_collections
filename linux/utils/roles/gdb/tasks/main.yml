@@ -19,4 +19,6 @@
     update: yes
 
 - name: install PWNDBG
-  shell: "{{ ansible_user_dir }}/pwndbg/setup.sh"
+  shell: 
+    cmd: "./setup.sh"
+    chdir: "{{ ansible_user_dir }}/pwndbg"

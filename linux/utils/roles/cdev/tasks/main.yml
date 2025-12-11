@@ -1,0 +1,45 @@
+- name: install lib requirements
+  ansible.builtin.apt:
+    name:
+      - build-essential      # gcc, g++, make
+      - clang
+      - llvm
+      
+      # Build tools
+      - cmake
+      - ninja-build
+      - meson
+      - autoconf
+      - automake
+      - libtool
+      - pkg-config
+      
+      # Debuggers
+      - gdb
+      - lldb
+      - valgrind
+      
+      # Static analysis
+      - clang-tidy
+      - clang-format
+      - cppcheck
+      
+      # Libraries (common)
+      - libssl-dev
+      - libcurl4-openssl-dev
+      - zlib1g-dev
+      - libfmt-dev
+      - nlohmann-json3-dev
+      
+      # Tools
+      - ccache              # compiler cache
+      - bear                # generates compile_commands.json
+      - strace
+      - ltrace
+      
+      # Man pages
+      - manpages-dev
+      - glibc-doc
+    state: present
+    update_cache: true
+  become: true

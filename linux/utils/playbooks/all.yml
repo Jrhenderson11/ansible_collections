@@ -6,6 +6,12 @@
       CARGO_HOME: "{{ ansible_user_dir }}/.cargo"
       RUSTUP_HOME: "{{ ansible_user_dir }}/.rustup"
   roles:
+   - role: apt_upgrade
+     tags: apt_upgrade
+   - role: cdev
+     tags: cdev
+   - role: tools_dir
+     tags: tools_dir
    - role: firefox
      tags: firefox
    - role: cargo
@@ -34,8 +40,6 @@
      tags: tcpdump
    - role: wireshark
      tags: wireshark
-   - role: apt_upgrade
-     tags: apt_upgrade
    - role: gdb
      tags: gdb
    - role: sublime
@@ -58,3 +62,5 @@
      tags: xclip
    - role: net-tools
      tags: net-tools
+   - role: hextools
+     tags: hextools

@@ -6,13 +6,16 @@
   failed_when: false
   changed_when: false
 
-- name: Refresh facts
-  ansible.builtin.setup:
-    gather_subset: env
+- name: Set rust vars
+  ansible.builtin.set_fact:
+    rust_env:
+      PATH: "/usr/local/cargo/bin:{{ ansible_env.PATH }}"
+      CARGO_HOME: "/usr/local/cargo"
 
 - name: install
   when: dust_exists.rc != 0
   block:
   - name: Dust
+    environment: "{{ rust_env }}"
     community.general.cargo:
       name:  du-dust

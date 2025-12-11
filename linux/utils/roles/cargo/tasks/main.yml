@@ -25,6 +25,12 @@
       - rust
     become: true
 
+  - name: Set rust default toolchain
+    ansible.builtin.command: /usr/local/cargo/bin/rustup default stable
+    environment: "{{ rust_env }}"
+    args:
+      creates: "{{ ansible_env.HOME }}/.rustup/toolchains/stable-*"
+
   - name: Add rust to user profile
     ansible.builtin.blockinfile:
       path: "{{ ansible_user_dir }}/.zshrc"  # or .profile, .zshrc

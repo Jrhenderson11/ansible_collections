@@ -9,8 +9,8 @@
 - name: Set rust vars
   ansible.builtin.set_fact:
     rust_env:
-      PATH: "/usr/local/cargo/bin:{{ ansible_env.PATH }}"
-      CARGO_HOME: "/usr/local/cargo"
+      PATH: "{{ ansible_env.HOME }}/.cargo/bin:{{ ansible_env.PATH }}"
+      CARGO_HOME: "{{ ansible_env.HOME }}/.cargo"
 
 - name: install
   when: dust_exists.rc != 0

@@ -1,0 +1,5 @@
+- name: install nm-applet
+  ansible.builtin.package:
+    name: nm-applet
+    state: present
+  become: true

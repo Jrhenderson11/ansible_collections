@@ -142,6 +142,12 @@ improve checks before installing
 # metasploit_msfdb: False
  -->
 
+Linux:
+ - fix background 
+ - startup app:
+  - hygiene
+  - gping
+ - /home/james/.config/i3/custom_shell_start.sh
 dunst desktop
 blueman-applet
 
@@ -219,7 +225,7 @@ havok / sliver
 ## Windows
 PECloak
 gping (choco)
-mingw
+fmingw
 
 supernova
  - PE:

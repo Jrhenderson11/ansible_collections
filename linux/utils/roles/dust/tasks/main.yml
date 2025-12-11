@@ -6,6 +6,10 @@
   failed_when: false
   changed_when: false
 
+- name: Refresh facts
+  ansible.builtin.setup:
+    gather_subset: env
+
 - name: install
   when: dust_exists.rc != 0
   block:

@@ -1,15 +1,25 @@
 ---
-- name: Download duf source
-  git:
-    repo: https://github.com/muesli/duf.git
-    dest: "{{ tmp_dir }}"
-
-- name: build
-  ansible.builtin.command: go build
-  args:
-    chdir: "{{ tmp_dir }}"
+- name: check if duf is installed
+  shell: command -v duf
+  register: duf_exists
+  ignore_errors: true
+  failed_when: false
+  changed_when: false
 
 - name: install
-  ansible.builtin.command: go install
-  args:
-    chdir: "{{ tmp_dir }}"
+  when: duf_exists.rc != 0
+  block:
+  - name: Download duf source
+    git:
+      repo: https://github.com/muesli/duf.git
+      dest: "{{ tmp_dir }}"
+
+  - name: build
+    ansible.builtin.command: go build
+    args:
+      chdir: "{{ tmp_dir }}"
+
+  - name: install
+    ansible.builtin.command: go install
+    args:
+      chdir: "{{ tmp_dir }}"

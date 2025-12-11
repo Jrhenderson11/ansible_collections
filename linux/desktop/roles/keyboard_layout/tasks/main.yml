@@ -1,0 +1,17 @@
+- name: Set keyboard config
+  become: true
+  ansible.builtin.copy:
+    dest: /etc/default/keyboard
+    content: |
+      XKBMODEL="pc105"
+      XKBLAYOUT="gb"
+      XKBVARIANT=""
+      XKBOPTIONS=""
+  notify: Apply keyboard
+
+handlers:
+  - name: Apply keyboard
+    become: true
+    ansible.builtin.shell: |
+      setupcon --save-only
+      udevadm trigger --subsystem-match=input --action=change

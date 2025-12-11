@@ -2,9 +2,9 @@
 - hosts: "{{target|default('all')}}"
   vars:
     rust_env:
-      PATH: "{{ ansible_env.HOME }}/.cargo/bin:{{ ansible_env.PATH }}"
-      CARGO_HOME: "{{ ansible_env.HOME }}/.cargo"
-      RUSTUP_HOME: "{{ ansible_env.HOME }}/.rustup"
+      PATH: "{{ ansible_user_dir }}/.cargo/bin:{{ ansible_env.PATH }}"
+      CARGO_HOME: "{{ ansible_user_dir }}/.cargo"
+      RUSTUP_HOME: "{{ ansible_user_dir }}/.rustup"
   roles:
    - role: firefox
      tags: firefox

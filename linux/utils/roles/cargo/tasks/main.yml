@@ -27,7 +27,7 @@
 
   - name: Add rust to user profile
     ansible.builtin.blockinfile:
-      path: "{{ ansible_env.HOME }}/.zshrc"  # or .profile, .zshrc
+      path: "{{ ansible_user_dir }}/.zshrc"  # or .profile, .zshrc
       marker: "# {mark} RUST"
       block: |
         export CARGO_HOME="$HOME/.cargo"

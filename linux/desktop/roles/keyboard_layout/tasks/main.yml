@@ -7,11 +7,8 @@
       XKBLAYOUT="gb"
       XKBVARIANT=""
       XKBOPTIONS=""
-  notify: Apply keyboard
-
-handlers:
-  - name: Apply keyboard
-    become: true
-    ansible.builtin.shell: |
-      setupcon --save-only
-      udevadm trigger --subsystem-match=input --action=change
+- name: Apply keyboard
+  become: true
+  ansible.builtin.shell: |
+    setupcon --save-only
+    udevadm trigger --subsystem-match=input --action=change

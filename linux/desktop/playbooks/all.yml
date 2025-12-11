@@ -25,3 +25,5 @@
      tags: remove_ubuntu_bloat
    - role: dark-gtk
      tags: dark-gtk
+   - role: keyboard_layout
+     tags: keyboard_layout

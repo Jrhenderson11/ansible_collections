@@ -1,4 +1,14 @@
 ---
-- name: Dust
-  community.general.cargo:
-    name:  du-dust
+- name: check if dust is installed
+  shell: command -v dust
+  register: dust_exists
+  ignore_errors: true
+  failed_when: false
+  changed_when: false
+
+- name: install
+  when: dust_exists.rc != 0
+  block:
+  - name: Dust
+    community.general.cargo:
+      name:  du-dust

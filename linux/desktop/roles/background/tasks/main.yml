@@ -9,12 +9,12 @@
     - name: Copy wallpaper
       ansible.builtin.copy:
         src: files/wallpaper.png
-        dest: "{{ ansible_env.HOME }}/.wallpaper.png"
+        dest: "{{ ansible_user_dir }}/.wallpaper.png"
         mode: '0644'
 
     - name: Set background in i3 config
       ansible.builtin.lineinfile:
-        path: "{{ ansible_env.HOME }}/.config/i3/config"
+        path: "{{ ansible_user_dir }}/.config/i3/config"
         regexp: '^exec.*feh.*bg'
         line: 'exec --no-startup-id feh --bg-scale ~/.wallpaper.png'
         create: false

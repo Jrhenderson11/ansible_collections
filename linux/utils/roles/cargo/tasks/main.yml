@@ -20,7 +20,7 @@
       - rust
 
   - name: Install rust/cargo
-    shell: /tmp/rust.sh -y
+    shell: CARGO_HOME=/usr/local/cargo RUSTUP_HOME=/usr/local/rustup /tmp/rust.sh -y --no-modify-path
     tags:
       - rust
     become: true
@@ -30,6 +30,6 @@
       path: "{{ ansible_user_dir }}/.zshrc"  # or .profile, .zshrc
       marker: "# {mark} RUST"
       block: |
-        export CARGO_HOME="$HOME/.cargo"
-        export RUSTUP_HOME="$HOME/.rustup"
-        export PATH="$HOME/.cargo/bin:$PATH"
+        export CARGO_HOME="/usr/local/cargo"
+        export RUSTUP_HOME="/usr/local/rustup"
+        export PATH="/usr/local/cargo:$PATH"

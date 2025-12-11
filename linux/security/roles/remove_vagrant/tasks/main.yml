@@ -1,0 +1,7 @@
+- name: Remove vagrant user
+  ansible.builtin.user:
+    name: vagrant
+    state: absent
+    remove: true
+    force: true  # kills processes
+  become: true

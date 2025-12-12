@@ -1,4 +1,14 @@
 ---
+- name: xrandr_apt
+  ansible.builtin.apt:
+    name: xrandr
+    state: latest
+  become: true
+- name: arandr_apt
+  ansible.builtin.apt:
+    name: arandr
+    state: latest
+  become: true
 - name: autorandr_apt
   ansible.builtin.apt:
     name: autorandr

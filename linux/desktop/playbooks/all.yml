@@ -3,27 +3,27 @@
   roles:
    - role: roles-ansible.i3wm
      tags: i3wm
-   - role: background
-     tags: i3wm
    - role: zsh
      tags: zsh
+   - role: dotfiles
+     tags: dotfiles
+   - role: background
+     tags: background
    - role: make
      tags: make
    - role: oh_my_zsh
      tags: oh_my_zsh
    - role: pavucontrol
      tags: pavucontrol
-   - role: arandr
-     tags: arandr
    - role: autorandr
      tags: autorandr
    - role: appimage_support
      tags: appimage_support
-   - role: dotfiles
-     tags: dotfiles
    - role: remove_ubuntu_bloat
      tags: remove_ubuntu_bloat
    - role: dark-gtk
      tags: dark-gtk
    - role: keyboard_layout
      tags: keyboard_layout
+   - role: nm-applet
+     tags: nm-applet

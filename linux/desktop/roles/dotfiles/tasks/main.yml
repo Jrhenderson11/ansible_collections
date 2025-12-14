@@ -16,6 +16,22 @@
       dest: "{{ ansible_user_dir }}/.config/i3"
       state: link
 
+ - name: Link .gitconfig
+    ansible.builtin.file:
+      src: "{{ ansible_user_dir }}/tools/dotfiles/.gitconfig"
+      dest: "{{ ansible_user_dir }}/.gitconfig"
+      state: link
+ - name: Link .gitconfig-priv
+    ansible.builtin.file:
+      src: "{{ ansible_user_dir }}/tools/dotfiles/.gitconfig-priv"
+      dest: "{{ ansible_user_dir }}/.gitconfig-priv"
+      state: link
+ - name: Link .gitconfig-work
+    ansible.builtin.file:
+      src: "{{ ansible_user_dir }}/tools/dotfiles/.gitconfig-work"
+      dest: "{{ ansible_user_dir }}/.gitconfig-work"
+      state: link
+
 # IF LAPTOP
 # ln $PWD/.inputrc ~/.inputrc
 

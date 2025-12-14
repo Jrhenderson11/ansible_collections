@@ -1,33 +1,45 @@
 
 ---
-- name: remove previous OMZ
-  shell: "rm -rf {{ ansible_user_dir }}/.oh-my-zsh"
+- name: Remove previous OMZ
+  ansible.builtin.shell: "rm -rf {{ ansible_user_dir }}/.oh-my-zsh"
 
 - name: Download OMZ
-  get_url: 
+  ansible.builtin.get_url: 
     url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
     dest: /tmp/omz_install.sh
-    mode: +x
+    mode: '0755'
 
 - name: Install OMZ
-  command: zsh /tmp/omz_install.sh --unattended
+  ansible.builtin.command: zsh /tmp/omz_install.sh --unattended
 
-- name: zsh-syntax-highlighting plugin
-  git: 
-    repo: https://github.com/zsh-users/zsh-syntax-highlighting
-    dest: "{{ ansible_user_dir }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
+- name: Install external plugins
+  ansible.builtin.git:
+    repo: "{{ item.repo }}"
+    dest: "{{ ansible_user_dir }}/.oh-my-zsh/custom/plugins/{{ item.name }}"
+    depth: 1
+  loop:
+    - { name: zsh-autosuggestions, repo: "https://github.com/zsh-users/zsh-autosuggestions" }
+    - { name: zsh-completions, repo: "https://github.com/zsh-users/zsh-completions" }
+    - { name: evalcache, repo: "https://github.com/mroth/evalcache" }
+    - { name: fast-syntax-highlighting, repo: "https://github.com/zdharma-continuum/fast-syntax-highlighting" }
+    - { name: you-should-use, repo: "https://github.com/MichaelAquilina/zsh-you-should-use" }
 
-- name: zsh-autosuggestions plugin
-  git: 
-    repo: https://github.com/zsh-users/zsh-autosuggestions
-    dest: "{{ ansible_user_dir }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
-
-- name: zsh-completions plugin
-  git: 
-    repo: https://github.com/zsh-users/zsh-completions
-    dest: "{{ ansible_user_dir }}/.oh-my-zsh/custom/plugins/zsh-completions"
-
-- name: zsh-evalcache plugin
-  git: 
-    repo: https://github.com/mroth/evalcache
-    dest: "{{ ansible_user_dir }}/.oh-my-zsh/custom/plugins/evalcache"
+- name: Configure plugins in .zshrc
+  ansible.builtin.lineinfile:
+    path: "{{ ansible_user_dir }}/.zshrc"
+    regexp: '^plugins=\('
+    line: >-
+      plugins=(git
+      colored-man-pages
+      colorize
+      ufw
+      ubuntu
+      command-not-found
+      git-auto-fetch
+      ssh-agent
+      docker
+      zsh-autosuggestions
+      zsh-completions
+      evalcache
+      fast-syntax-highlighting
+      you-should-use)

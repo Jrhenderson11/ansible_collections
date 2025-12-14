@@ -1,13 +1,21 @@
 ---
-- name: Install Burp Suite Pro
-  hosts: all
-  vars:
-    burp_version: "2025.11.4"
-    burp_installer: "burpsuite_pro_linux_v{{ burp_version | replace('.', '_') }}.sh"
-    burp_url: "https://portswigger-cdn.net/burp/releases/download?product=pro&version={{ burp_version }}&type=Linux"
-    burp_install_dir: "{{ ansible_user_dir }}/tools/web/BurpSuitePro"
+vars:
+  burp_version: "2025.11.4"
+  burp_installer: "burpsuite_pro_linux_v{{ burp_version | replace('.', '_') }}.sh"
+  burp_url: "https://portswigger-cdn.net/burp/releases/download?product=pro&version={{ burp_version }}&type=Linux"
+  burp_install_dir: "{{ ansible_user_dir }}/tools/web/BurpSuitePro"
 
-  tasks:
+tasks:
+
+  - name: Check if Burp Suite already installed
+    ansible.builtin.stat:
+      path: "{{ burp_install_dir }}/BurpSuitePro"
+    register: burp_installed
+
+  - name: Install Burp Suite Pro
+    when: not burp_installed.stat.exists
+    block:
+
     - name: Install dependencies
       ansible.builtin.apt:
         name:

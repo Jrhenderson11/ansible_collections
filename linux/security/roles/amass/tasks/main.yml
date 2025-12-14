@@ -1,0 +1,39 @@
+---
+# roles/amass/tasks/main.yml
+
+- name: Install amass via go
+  ansible.builtin.command:
+    cmd: go install -v github.com/owasp-amass/amass/v4/...@master
+  environment: "{{ go_env }}"
+  register: amass_install
+  changed_when: "'downloading' in amass_install.stderr"
+
+- name: Create amass config directory
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.config/amass"
+    state: directory
+    mode: '0755'
+
+- name: Copy amass config
+  ansible.builtin.template:
+    src: config.yaml.j2
+    dest: "{{ ansible_env.HOME }}/.config/amass/config.yaml"
+    mode: '0600'
+  when: amass_api_keys is defined
+
+- name: Symlink amass to tools dir
+  ansible.builtin.file:
+    src: "{{ ansible_env.HOME }}/go/bin/amass"
+    dest: "{{ tools_dir }}/amass"
+    state: link
+
+- name: Verify amass installation
+  ansible.builtin.command:
+    cmd: "{{ tools_dir }}/amass version"
+  register: amass_version
+  changed_when: false
+  failed_when: false
+
+- name: Show amass version
+  ansible.builtin.debug:
+    msg: "amass: {{ amass_version.stdout | default('installed') }}"

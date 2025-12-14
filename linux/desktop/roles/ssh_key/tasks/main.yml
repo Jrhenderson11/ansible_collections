@@ -1,0 +1,55 @@
+---
+- name: Setup SSH keys for VM
+  hosts: all
+  vars:
+    key_name: "id_ed25519_vm"
+    key_path: "{{ ansible_env.HOME }}/.ssh/{{ key_name }}"
+
+  tasks:
+    # On VM - generate keypair
+    - name: Generate SSH keypair on VM
+      community.crypto.openssh_keypair:
+        path: "{{ key_path }}"
+        type: ed25519
+        comment: "{{ ansible_user }}@{{ inventory_hostname }}"
+      register: ssh_key
+
+    - name: Add public key to authorized_keys
+      ansible.posix.authorized_key:
+        user: "{{ ansible_user }}"
+        key: "{{ ssh_key.public_key }}"
+        state: present
+
+    - name: Fetch private key to controller
+      ansible.builtin.fetch:
+        src: "{{ key_path }}"
+        dest: "~/.ssh/{{ inventory_hostname }}_{{ key_name }}"
+        flat: true
+
+    - name: Fetch public key to controller
+      ansible.builtin.fetch:
+        src: "{{ key_path }}.pub"
+        dest: "~/.ssh/{{ inventory_hostname }}_{{ key_name }}.pub"
+        flat: true
+
+    # On controller - update ssh config
+    - name: Add VM to SSH config on controller
+      ansible.builtin.blockinfile:
+        path: ~/.ssh/config
+        marker: "# {mark} {{ inventory_hostname }}"
+        block: |
+          Host {{ inventory_hostname }}
+              HostName {{ ansible_host | default(inventory_hostname) }}
+              User {{ ansible_user }}
+              IdentityFile ~/.ssh/{{ inventory_hostname }}_{{ key_name }}
+              StrictHostKeyChecking no
+              UserKnownHostsFile /dev/null
+        create: true
+        mode: '0600'
+      delegate_to: localhost
+
+    - name: Set permissions on fetched key
+      ansible.builtin.file:
+        path: "~/.ssh/{{ inventory_hostname }}_{{ key_name }}"
+        mode: '0600'
+      delegate_to: localhost

@@ -13,6 +13,10 @@
      tags: make
    - role: oh_my_zsh
      tags: oh_my_zsh
+   - role: hardening
+     tags: hardening
+   - role: ssh_key
+     tags: ssh_key
    - role: pavucontrol
      tags: pavucontrol
    - role: autorandr

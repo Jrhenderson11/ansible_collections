@@ -1,0 +1,191 @@
+---
+- name: Security hardening
+  hosts: all
+  become: true
+
+  tasks:
+    # SSH hardening
+    - name: Harden SSH config
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      loop:
+        - { regexp: '^#?PermitRootLogin', line: 'PermitRootLogin no' }
+        - { regexp: '^#?PasswordAuthentication', line: 'PasswordAuthentication no' }
+        - { regexp: '^#?PermitEmptyPasswords', line: 'PermitEmptyPasswords no' }
+        - { regexp: '^#?X11Forwarding', line: 'X11Forwarding no' }
+        - { regexp: '^#?MaxAuthTries', line: 'MaxAuthTries 3' }
+        - { regexp: '^#?ClientAliveInterval', line: 'ClientAliveInterval 300' }
+        - { regexp: '^#?ClientAliveCountMax', line: 'ClientAliveCountMax 2' }
+      notify: Restart sshd
+
+    # Firewalling handled in ufw task
+
+    # Automatic updates
+    - name: Install unattended-upgrades
+      ansible.builtin.apt:
+        name:
+          - unattended-upgrades
+          - apt-listchanges
+        state: present
+
+    - name: Enable automatic security updates
+      ansible.builtin.copy:
+        dest: /etc/apt/apt.conf.d/20auto-upgrades
+        content: |
+          APT::Periodic::Update-Package-Lists "1";
+          APT::Periodic::Unattended-Upgrade "1";
+          APT::Periodic::AutocleanInterval "7";
+
+    # Kernel hardening
+    - name: Sysctl hardening
+      ansible.posix.sysctl:
+        name: "{{ item.name }}"
+        value: "{{ item.value }}"
+        sysctl_file: /etc/sysctl.d/99-hardening.conf
+        reload: true
+      loop:
+        # Disable IP forwarding
+        - { name: net.ipv4.ip_forward, value: '0' }
+        # Ignore ICMP redirects
+        - { name: net.ipv4.conf.all.accept_redirects, value: '0' }
+        - { name: net.ipv6.conf.all.accept_redirects, value: '0' }
+        # Ignore source-routed packets
+        - { name: net.ipv4.conf.all.accept_source_route, value: '0' }
+        # SYN flood protection
+        - { name: net.ipv4.tcp_syncookies, value: '1' }
+        # Disable ICMP broadcast
+        - { name: net.ipv4.icmp_echo_ignore_broadcasts, value: '1' }
+        # Log martians
+        - { name: net.ipv4.conf.all.log_martians, value: '1' }
+        # ASLR
+        - { name: kernel.randomize_va_space, value: '2' }
+        # Restrict dmesg
+        - { name: kernel.dmesg_restrict, value: '1' }
+        # Restrict kernel pointers
+        - { name: kernel.kptr_restrict, value: '2' }
+
+    # Fail2ban
+    - name: Install fail2ban
+      ansible.builtin.apt:
+        name: fail2ban
+        state: present
+
+    - name: Configure fail2ban for SSH
+      ansible.builtin.copy:
+        dest: /etc/fail2ban/jail.local
+        content: |
+          [sshd]
+          enabled = true
+          port = 22
+          filter = sshd
+          logpath = /var/log/auth.log
+          maxretry = 3
+          bantime = 3600
+          findtime = 600
+      notify: Restart fail2ban
+
+    - name: Remove unnecessary services
+      ansible.builtin.apt:
+        name:
+          # Printing
+          - cups
+          - cups-browsed
+          - cups-daemon
+          
+          # Mail (if not needed)
+          - postfix
+          - sendmail
+          - exim4
+          
+          # Remote access
+          - telnet
+          - rsh-client
+          - rsh-redone-client
+          - rlogin
+          - ftp
+          
+          # Legacy/insecure
+          - nis
+          - talk
+          - ntalk
+          - xinetd
+          - inetutils-inetd
+          
+          # Avahi (mDNS - local network discovery)
+          - avahi-daemon
+          - avahi-utils
+          
+          # Desktop (if server)
+          - whoopsie          # Ubuntu error reporting
+          - apport            # Crash reporting
+          - popularity-contest
+          
+          # SNMP (if not needed)
+          - snmpd
+          
+          # Bluetooth (if not needed)
+          # - bluez
+          # - bluetooth
+          
+          # Samba (if not sharing files)
+          - samba
+          - samba-common
+          
+          # NFS (if not needed)
+          - nfs-kernel-server
+          - nfs-common
+          
+          # Wireless tools (if VM/server)
+          # - wpasupplicant
+          # - wireless-tools
+        state: absent
+        purge: true
+      become: true
+
+    # Secure shared memory
+    - name: Secure shared memory
+      ansible.posix.mount:
+        path: /run/shm
+        src: none
+        fstype: tmpfs
+        opts: defaults,noexec,nodev,nosuid
+        state: mounted
+
+    # Password policy
+    - name: Install libpam-pwquality
+      ansible.builtin.apt:
+        name: libpam-pwquality
+        state: present
+
+    # Audit logging
+    - name: Install auditd
+      ansible.builtin.apt:
+        name:
+          - auditd
+          - audispd-plugins
+        state: present
+
+    - name: Enable auditd
+      ansible.builtin.systemd:
+        name: auditd
+        enabled: true
+        state: started
+
+    # Disable USB storage (optional)
+    # - name: Disable USB storage
+    #   ansible.builtin.copy:
+    #     dest: /etc/modprobe.d/disable-usb-storage.conf
+    #     content: "install usb-storage /bin/true"
+
+  handlers:
+    - name: Restart sshd
+      ansible.builtin.systemd:
+        name: sshd
+        state: restarted
+
+    - name: Restart fail2ban
+      ansible.builtin.systemd:
+        name: fail2ban
+        state: restarted

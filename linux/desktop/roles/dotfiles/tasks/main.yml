@@ -3,6 +3,7 @@
   ansible.builtin.git:
     repo: 'https://github.com/jrhenderson11/dotfiles'
     dest: "{{ ansible_user_dir }}/tools/dotfiles"
+    force: true
 
 - name: Link aliases
   ansible.builtin.file:

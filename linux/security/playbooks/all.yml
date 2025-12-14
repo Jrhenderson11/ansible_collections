@@ -7,6 +7,8 @@
      tags: nmap
    - role: cutter
      tags: cutter
+   - role: binja
+     tags: binja
    - role: rr
      tags: rr
    - role: hashcat
@@ -29,3 +31,10 @@
      tags: wordlists 
    - role: burpsuite
      tags: burpsuite 
+   - role: ad_tools
+     tags: ad_tools
+   - role: semgrep
+     tags: semgrep
+   - role: web_tools
+     tags: web_tools
+

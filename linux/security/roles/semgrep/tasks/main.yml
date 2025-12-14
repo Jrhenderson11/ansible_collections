@@ -1,0 +1,16 @@
+# semgrep
+- name: Install semgrep
+  ansible.builtin.pip:
+    name: semgrep
+    state: present
+    extra_args: --break-system-packages
+  become: true
+
+- name: Verify semgrep
+  ansible.builtin.command: semgrep --version
+  register: semgrep_version
+  changed_when: false
+
+- name: Show semgrep version
+  ansible.builtin.debug:
+    msg: "Semgrep: {{ semgrep_version.stdout }}"

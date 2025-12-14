@@ -1,0 +1,15 @@
+- name: Install web security tools
+  ansible.builtin.command:
+    cmd: "go install -v {{ item }}@latest"
+  environment: "{{ go_env }}"
+  loop:
+    - github.com/ffuf/ffuf/v2
+    - github.com/OJ/gobuster/v3
+    - github.com/tomnomnom/gf
+    - github.com/tomnomnom/waybackurls
+    - github.com/tomnomnom/httprobe
+    - github.com/lc/gau/v2/cmd/gau
+    - github.com/hakluke/hakrawler
+    - github.com/jaeles-project/gospider
+    - github.com/sensepost/gowitness
+  changed_when: false

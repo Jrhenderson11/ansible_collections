@@ -1,0 +1,11 @@
+# ldapdomaindump
+- name: Install ldapdomaindump
+  ansible.builtin.pip:
+    name:
+      - ldapdomaindump
+      - mitm6
+      - bloodhound
+      - certipy-ad
+    state: present
+    extra_args: --break-system-packages
+  become: true

@@ -2,16 +2,14 @@
   ansible.builtin.git:
     repo: git@github.com:Jrhenderson11/misc_tools.git
     dest: /tmp/misc_tool
-    version: main
+    version: master
   delegate_to: localhost
   run_once: true
 
 - name: Copy repo to server
-  ansible.posix.synchronize:
+  ansible.builtin.copy:
     src: /tmp/misc_tool/
     dest: "{{ ansible_user_dir }}/tools/misc_tools"
-    delete: true
-    recursive: true
 
 - name: Cleanup local clone
   ansible.builtin.file:

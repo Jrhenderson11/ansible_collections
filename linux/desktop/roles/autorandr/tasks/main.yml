@@ -1,7 +1,7 @@
 ---
-- name: xrandr_apt
+- name: x11-xserver-utils_apt
   ansible.builtin.apt:
-    name: xrandr
+    name: x11-xserver-utils
     state: latest
   become: true
 - name: arandr_apt

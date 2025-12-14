@@ -104,6 +104,15 @@ function mkrole() {
 
 ## todo
 
+Linux:
+
+ - VM:
+ - Laptop:
+  - pgup/down
+  - inputkeys for vol
+  - screen lock
+
+
 with profile:
 Install-Module -Name PSReadLine -Force -SkipPublisherCheck
 

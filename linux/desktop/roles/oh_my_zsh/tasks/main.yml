@@ -50,3 +50,7 @@
       evalcache
       fast-syntax-highlighting
       you-should-use)
+
+- name: cleanup old configs
+  ansible.builtin.shell:
+    - path: "rm {{ ansible_user_dir}}/.zshrc.pre-oh-my-zsh*" 

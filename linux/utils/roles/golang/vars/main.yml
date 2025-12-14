@@ -1,1 +1,3 @@
 tmp_archive: "/tmp/go.tgz"
+goroot: /usr/local/go
+gopath: "{{ ansible_env.HOME }}/go"

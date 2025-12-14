@@ -17,6 +17,26 @@
   shell: echo "export PATH=$PATH:/usr/local/go/bin" >> /etc/environment
   become: true
 
-- name: Refresh facts
-  ansible.builtin.setup:
-    gather_subset: env
+- name: Ensure GOROOT is set in ~/.zshrc
+  ansible.builtin.lineinfile:
+    path: "{{ ansible_env.HOME }}/.zshrc"
+    regexp: '^export GOROOT='
+    line: 'export GOROOT={{ goroot }}'
+    create: yes
+    mode: '0644'
+
+- name: Ensure GOPATH is set in ~/.zshrc
+  ansible.builtin.lineinfile:
+    path: "{{ ansible_env.HOME }}/.zshrc"
+    regexp: '^export GOPATH='
+    line: 'export GOPATH={{ gopath }}'
+    create: yes
+    mode: '0644'
+
+- name: Add Go bin directories to PATH in ~/.zshrc
+  ansible.builtin.lineinfile:
+    path: "{{ ansible_env.HOME }}/.zshrc"
+    regexp: '^export PATH=.*\$GOROOT/bin.*\$GOPATH/bin'
+    line: 'export PATH=$GOROOT/bin:$GOPATH/bin:$PATH'
+    create: yes
+    mode: '0644'

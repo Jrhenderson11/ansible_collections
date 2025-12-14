@@ -26,6 +26,12 @@
     stat: 
       path: /usr/bin/nordvpn
 
+  - name: Create nordvpn system group
+    ansible.builtin.group:
+      name: test
+      state: present
+    become: true
+
   - name: add user to nordvpn grp
     user:
       name: '{{ ansible_user_id }}'

@@ -6,9 +6,9 @@
   failed_when: false
   changed_when: false
 
-- name: Refresh facts
-  ansible.builtin.setup:
-    gather_subset: env
+# golang task writes path to /etc/environment, nly srcd on new SSH connectin
+- name: Reset SSH connection to pick up new environment
+  ansible.builtin.meta: reset_connection
 
 - name: install
   when: duf_exists.rc != 0

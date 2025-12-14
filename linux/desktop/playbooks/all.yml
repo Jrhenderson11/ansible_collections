@@ -27,3 +27,5 @@
      tags: keyboard_layout
    - role: nm-applet
      tags: nm-applet
+   - role: misc_tools
+     tags: misc_tools

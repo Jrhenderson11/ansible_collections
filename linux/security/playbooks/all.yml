@@ -21,5 +21,11 @@
      tags: nullinux
    - role: nxc
      tags: nxc
+   - role: project_discovery
+     tags: project_discovery
+   - role: amass
+     tags: amass
    - role: wordlists
      tags: wordlists 
+   - role: burpsuite
+     tags: burpsuite 

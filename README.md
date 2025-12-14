@@ -142,14 +142,16 @@ improve checks before installing
 # metasploit_msfdb: False
  -->
 
-Linux:
+# Linux:
  - fix background 
- - startup app:
-  - hygiene
-  - gping
  - /home/james/.config/i3/custom_shell_start.sh
 dunst desktop
 blueman-applet
+
+zmap
+amass
+nuclei
+project discovery
 
 firefox extensions
 https://github.com/mozilla/policy-templates/blob/master/README.md
@@ -191,6 +193,8 @@ https://github.com/mozilla/policy-templates/blob/master/README.md
 
 https://community.chocolatey.org/packages/Sudo
 sudo config --enable inline
+
+# linux
 
 az cli
 
@@ -298,6 +302,5 @@ yetanotherobfuscator
 ilspy
 dnspi
 yara
-
 
 https://github.com/kobake/mlocate32

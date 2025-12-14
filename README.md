@@ -107,10 +107,14 @@ function mkrole() {
 Linux:
 
  - VM:
+  - work gitconfig
  - Laptop:
-  - pgup/down
-  - inputkeys for vol
-  - screen lock
+  - pgup/down <- i3 / inputrc?
+  - inputkeys for vol <- i3
+  - screen lock <- i3
+  - nordvpn < - nordvpn
+  - wifi tools
+  - adio tools
 
 
 with profile:

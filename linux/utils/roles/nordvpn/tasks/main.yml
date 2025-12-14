@@ -19,7 +19,7 @@
       mode: +x
 
   - name: Run installer
-    command: "echo 'y' | sh {{ tmp_script }}"
+    command: "echo 'y\n' | sh {{ tmp_script }}"
     become: true
 
   - name: check
@@ -28,7 +28,7 @@
 
   - name: Create nordvpn system group
     ansible.builtin.group:
-      name: test
+      name: nordvpn
       state: present
     become: true
 

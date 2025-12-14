@@ -1,9 +1,7 @@
 ---
-- name: Security hardening
-  hosts: all
+- name: hardening
   become: true
-
-  tasks:
+  block:
     # SSH hardening
     - name: Harden SSH config
       ansible.builtin.lineinfile:
@@ -18,7 +16,6 @@
         - { regexp: '^#?MaxAuthTries', line: 'MaxAuthTries 3' }
         - { regexp: '^#?ClientAliveInterval', line: 'ClientAliveInterval 300' }
         - { regexp: '^#?ClientAliveCountMax', line: 'ClientAliveCountMax 2' }
-      notify: Restart sshd
 
     # Firewalling handled in ufw task
 
@@ -84,7 +81,6 @@
           maxretry = 3
           bantime = 3600
           findtime = 600
-      notify: Restart fail2ban
 
     - name: Remove unnecessary services
       ansible.builtin.apt:
@@ -179,7 +175,6 @@
     #     dest: /etc/modprobe.d/disable-usb-storage.conf
     #     content: "install usb-storage /bin/true"
 
-  handlers:
     - name: Restart sshd
       ansible.builtin.systemd:
         name: sshd

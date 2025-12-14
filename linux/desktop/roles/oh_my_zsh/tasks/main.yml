@@ -9,8 +9,15 @@
     dest: /tmp/omz_install.sh
     mode: '0755'
 
+
 - name: Install OMZ
   ansible.builtin.command: zsh /tmp/omz_install.sh --unattended
+
+- name: remove tmp script
+  ansible.builtin.file: 
+    path: /tmp/omz_install.sh
+    state: 'absent'
+
 
 - name: Install external plugins
   ansible.builtin.git:

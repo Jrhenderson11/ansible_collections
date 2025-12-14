@@ -1,0 +1,2 @@
+key_name: "id_ed25519_vm"
+key_path: "{{ ansible_env.HOME }}/.ssh/{{ key_name }}"

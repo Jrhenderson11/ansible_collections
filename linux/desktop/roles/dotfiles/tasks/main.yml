@@ -4,33 +4,45 @@
     repo: 'https://github.com/jrhenderson11/dotfiles'
     dest: "{{ ansible_user_dir }}/tools/dotfiles"
 
- - name: Link aliases
-    ansible.builtin.file:
-      src: "{{ ansible_user_dir }}/tools/dotfiles/.aliases"
-      dest: "{{ ansible_user_dir }}/.aliases"
-      state: link
+- name: Link aliases
+  ansible.builtin.file:
+    src: "{{ ansible_user_dir }}/tools/dotfiles/.aliases"
+    dest: "{{ ansible_user_dir }}/.aliases"
+    state: link
 
- - name: Link i3 config
-    ansible.builtin.file:
-      src: "{{ ansible_user_dir }}/tools/dotfiles/i3"
-      dest: "{{ ansible_user_dir }}/.config/i3"
-      state: link
+- name: Check i3 exists
+  ansible.builtin.stat:
+    path: "{{ ansible_user_dir }}/.config/i3"
+  register: folder_stat
 
- - name: Link .gitconfig
-    ansible.builtin.file:
-      src: "{{ ansible_user_dir }}/tools/dotfiles/.gitconfig"
-      dest: "{{ ansible_user_dir }}/.gitconfig"
-      state: link
- - name: Link .gitconfig-priv
-    ansible.builtin.file:
-      src: "{{ ansible_user_dir }}/tools/dotfiles/.gitconfig-priv"
-      dest: "{{ ansible_user_dir }}/.gitconfig-priv"
-      state: link
- - name: Link .gitconfig-work
-    ansible.builtin.file:
-      src: "{{ ansible_user_dir }}/tools/dotfiles/.gitconfig-work"
-      dest: "{{ ansible_user_dir }}/.gitconfig-work"
-      state: link
+- name: Remove i3 directory
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/.config/i3"
+    state: absent
+  when: folder_stat.stat.exists and folder_stat.stat.isdir
+
+- name: Link i3 config
+  ansible.builtin.file:
+    src: "{{ ansible_user_dir }}/tools/dotfiles/i3"
+    dest: "{{ ansible_user_dir }}/.config/i3"
+    state: link
+
+- name: Link .gitconfig
+  ansible.builtin.file:
+    src: "{{ ansible_user_dir }}/tools/dotfiles/.gitconfig"
+    dest: "{{ ansible_user_dir }}/.gitconfig"
+    state: link
+- name: Link .gitconfig-priv
+  ansible.builtin.file:
+    src: "{{ ansible_user_dir }}/tools/dotfiles/.gitconfig-priv"
+    dest: "{{ ansible_user_dir }}/.gitconfig-priv"
+    state: link
+
+- name: Link .gitconfig-work
+  ansible.builtin.file:
+    src: "{{ ansible_user_dir }}/tools/dotfiles/.gitconfig-work"
+    dest: "{{ ansible_user_dir }}/.gitconfig-work"
+    state: link
 
 # IF LAPTOP
 # ln $PWD/.inputrc ~/.inputrc

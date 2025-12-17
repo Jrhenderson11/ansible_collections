@@ -33,3 +33,5 @@
      tags: nm-applet
    - role: misc_tools
      tags: misc_tools
+   - role: git_config
+     tags: git_config

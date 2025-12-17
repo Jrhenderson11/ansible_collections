@@ -1,0 +1,12 @@
+- name: Add SSH config entry
+  blockinfile:
+    path: ~/.ssh/config
+    create: yes
+    mode: '0600'
+    marker: "# {mark} ANSIBLE MANAGED - myhost"
+    block: |
+      Host github.com
+          IdentityFile ~/.ssh/github.priv
+
+      Host git.reversec.com
+          IdentityFile ~/.ssh/git-reversec.priv

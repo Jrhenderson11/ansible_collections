@@ -116,6 +116,7 @@ Linux:
   - wifi tools
   - adio tools
 
+- log.sh in home
 
 with profile:
 Install-Module -Name PSReadLine -Force -SkipPublisherCheck
@@ -147,13 +148,6 @@ ZEBAR defender
 
 hide desktop apps
 
-improve checks before installing
-
-<!-- # metasploit
-# metasploit_url: "https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/templates/metasploit-framework-wrappers/msfupdate.erb"
-# metasploit_user: root
-# metasploit_msfdb: False
- -->
 
 # Linux:
  - fix background 
@@ -162,9 +156,6 @@ dunst desktop
 blueman-applet
 
 zmap
-amass
-nuclei
-project discovery
 
 firefox extensions
 https://github.com/mozilla/policy-templates/blob/master/README.md
@@ -216,28 +207,21 @@ powerline prompt
 time in prompt
 
 trufflehog
-scoutsuite
-katana
-dnsrecon
 
 iw
 hackrf radio
+urh
 aircrack
 
 hotspot?
 
-smbmap etc
-
-bloodhound.py
-
 crunch
-
-ldapdomaindump + ldap2json
 pywerview
 chisel
 
 ## C2
-havok / sliver
+havok / sliver: https://github.com/MEhrn00/ansible-role-sliver
+mythic: https://github.com/MEhrn00/ansible-role-mythic
 
 ## Windows
 PECloak

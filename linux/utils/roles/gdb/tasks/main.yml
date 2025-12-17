@@ -14,11 +14,11 @@
 - name: Download PWNDBG
   git:
     repo: https://github.com/pwndbg/pwndbg.git
-    dest: "{{ ansible_user_dir }}/pwndbg"
+    dest: "{{ ansible_user_dir }}/tools/pwndbg"
     clone: yes
     update: yes
 
 - name: install PWNDBG
   shell: 
     cmd: "./setup.sh"
-    chdir: "{{ ansible_user_dir }}/pwndbg"
+    chdir: "{{ ansible_user_dir }}/tools/pwndbg"

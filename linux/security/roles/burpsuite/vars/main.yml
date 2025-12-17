@@ -1,0 +1,4 @@
+burp_version: "2025.11.4"
+burp_installer: "burpsuite_pro_linux_v{{ burp_version | replace('.', '_') }}.sh"
+burp_url: "https://portswigger-cdn.net/burp/releases/download?product=pro&version={{ burp_version }}&type=Linux"
+burp_install_dir: "{{ ansible_user_dir }}/tools/web/BurpSuitePro"

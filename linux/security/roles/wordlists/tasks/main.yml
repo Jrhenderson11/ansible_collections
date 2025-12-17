@@ -36,7 +36,7 @@
     url: https://raw.githubusercontent.com/stealthsploit/OneRuleToRuleThemStill/main/OneRuleToRuleThemStill.rule
     dest: /wordlists/OneRuleToRuleThemStill.rule
 
-- name: Google 1000
+# - name: Google 1000
 
 
-- name: Wikipedia
+# - name: Wikipedia

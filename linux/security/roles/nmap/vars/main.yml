@@ -1,4 +1,5 @@
+version: 7.98
 tmp_archive: "/tmp/nmap.bz2"
 install_dir: "/tools/scanners"
 tmp_key: "/tmp/nmap_key.asc"
-tmp_fp: "/tmp/nmap-7.95-2.x86_64.rpm.asc"
+tmp_fp: "/tmp/nmap-{{ version }}-2.x86_64.rpm.asc"

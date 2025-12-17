@@ -1,0 +1,13 @@
+tools_dir: "{{ ansible_env.HOME }}/tools"
+pd_tools:
+  - nuclei
+  - subfinder
+  - httpx
+  - cvemap
+  - katana
+  - naabu
+  - asnmap
+  - shuffledns
+go_env:
+  PATH: "/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin:{{ ansible_env.PATH }}"
+  GOPATH: "{{ ansible_env.HOME }}/go"

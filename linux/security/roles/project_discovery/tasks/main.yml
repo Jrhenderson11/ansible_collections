@@ -1,80 +1,62 @@
 ---
-- name: Install ProjectDiscovery tools
-  hosts: all
-  vars:
-    tools_dir: "{{ ansible_env.HOME }}/tools"
-    pd_tools:
-      - nuclei
-      - subfinder
-      - httpx
-      - cvemap
-      - katana
-      - naabu
-      - asnmap
-      - shuffledns
-    go_env:
-      PATH: "/usr/local/go/bin:{{ ansible_env.HOME }}/go/bin:{{ ansible_env.PATH }}"
-      GOPATH: "{{ ansible_env.HOME }}/go"
+- name: Ensure tools directory exists
+  ansible.builtin.file:
+    path: "{{ tools_dir }}"
+    state: directory
+    mode: '0755'
 
-  tasks:
-    - name: Ensure tools directory exists
-      ansible.builtin.file:
-        path: "{{ tools_dir }}"
-        state: directory
-        mode: '0755'
+- name: Install ProjectDiscovery tools via go install
+  ansible.builtin.command:
+    cmd: "go install -v github.com/projectdiscovery/{{ item }}/cmd/{{ item }}@latest"
+  environment: "{{ go_env }}"
+  loop: "{{ pd_tools }}"
+  register: install_result
+  changed_when: "'downloading' in install_result.stderr"
 
-    - name: Install ProjectDiscovery tools via go install
-      ansible.builtin.command:
-        cmd: "go install -v github.com/projectdiscovery/{{ item }}/cmd/{{ item }}@latest"
-      environment: "{{ go_env }}"
-      loop: "{{ pd_tools }}"
-      register: install_result
-      changed_when: "'downloading' in install_result.stderr"
+- name: Clone nuclei-templates
+  ansible.builtin.git:
+    repo: https://github.com/projectdiscovery/nuclei-templates.git
+    dest: "{{ tools_dir }}/nuclei-templates"
+    version: main
+    depth: 1
+    update: true
 
-    - name: Clone nuclei-templates
-      ansible.builtin.git:
-        repo: https://github.com/projectdiscovery/nuclei-templates.git
-        dest: "{{ tools_dir }}/nuclei-templates"
-        version: main
-        depth: 1
-        update: true
+- name: Symlink tools to tools dir
+  ansible.builtin.file:
+    src: "{{ ansible_env.HOME }}/go/bin/{{ item }}"
+    dest: "{{ tools_dir }}/{{ item }}"
+    state: link
+  loop: "{{ pd_tools }}"
 
-    - name: Symlink tools to tools dir
-      ansible.builtin.file:
-        src: "{{ ansible_env.HOME }}/go/bin/{{ item }}"
-        dest: "{{ tools_dir }}/{{ item }}"
-        state: link
-      loop: "{{ pd_tools }}"
+- name: Add tools dir to PATH in zshrc
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_env.HOME }}/.zshrc"
+    marker: "# {mark} PROJECTDISCOVERY"
+    block: |
+      export PATH="{{ tools_dir }}:$PATH"
+      export NUCLEI_TEMPLATES_PATH="{{ tools_dir }}/nuclei-templates"
+    create: true
 
-    - name: Add tools dir to PATH in zshrc
-      ansible.builtin.blockinfile:
-        path: "{{ ansible_env.HOME }}/.zshrc"
-        marker: "# {mark} PROJECTDISCOVERY"
-        block: |
-          export PATH="{{ tools_dir }}:$PATH"
-          export NUCLEI_TEMPLATES_PATH="{{ tools_dir }}/nuclei-templates"
-        create: true
+- name: Add tools dir to PATH in bashrc
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_env.HOME }}/.bashrc"
+    marker: "# {mark} PROJECTDISCOVERY"
+    block: |
+      export PATH="{{ tools_dir }}:$PATH"
+      export NUCLEI_TEMPLATES_PATH="{{ tools_dir }}/nuclei-templates"
+    create: true
 
-    - name: Add tools dir to PATH in bashrc
-      ansible.builtin.blockinfile:
-        path: "{{ ansible_env.HOME }}/.bashrc"
-        marker: "# {mark} PROJECTDISCOVERY"
-        block: |
-          export PATH="{{ tools_dir }}:$PATH"
-          export NUCLEI_TEMPLATES_PATH="{{ tools_dir }}/nuclei-templates"
-        create: true
+- name: Verify installations
+  ansible.builtin.command:
+    cmd: "{{ tools_dir }}/{{ item }} -version"
+  loop: "{{ pd_tools }}"
+  register: version_check
+  changed_when: false
+  failed_when: false
 
-    - name: Verify installations
-      ansible.builtin.command:
-        cmd: "{{ tools_dir }}/{{ item }} -version"
-      loop: "{{ pd_tools }}"
-      register: version_check
-      changed_when: false
-      failed_when: false
-
-    - name: Show installed versions
-      ansible.builtin.debug:
-        msg: "{{ item.item }}: {{ item.stdout_lines[0] | default('installed') }}"
-      loop: "{{ version_check.results }}"
-      loop_control:
-        label: "{{ item.item }}"
+- name: Show installed versions
+  ansible.builtin.debug:
+    msg: "{{ item.item }}: {{ item.stdout_lines[0] | default('installed') }}"
+  loop: "{{ version_check.results }}"
+  loop_control:
+    label: "{{ item.item }}"

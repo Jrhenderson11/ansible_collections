@@ -1,98 +1,90 @@
 ---
-vars:
-  burp_version: "2025.11.4"
-  burp_installer: "burpsuite_pro_linux_v{{ burp_version | replace('.', '_') }}.sh"
-  burp_url: "https://portswigger-cdn.net/burp/releases/download?product=pro&version={{ burp_version }}&type=Linux"
-  burp_install_dir: "{{ ansible_user_dir }}/tools/web/BurpSuitePro"
+- name: Check if Burp Suite already installed
+  ansible.builtin.stat:
+    path: "{{ burp_install_dir }}/BurpSuitePro"
+  register: burp_installed
 
-tasks:
+- name: Install Burp Suite Pro
+  when: not burp_installed.stat.exists
+  block:
 
-  - name: Check if Burp Suite already installed
-    ansible.builtin.stat:
-      path: "{{ burp_install_dir }}/BurpSuitePro"
-    register: burp_installed
+  - name: Install dependencies
+    ansible.builtin.apt:
+      name:
+        - fontconfig
+        - libfreetype6
+        - libx11-6
+        - libxext6
+        - libxrender1
+        - libxtst6
+        - libxi6
+      state: present
+    become: true
 
-  - name: Install Burp Suite Pro
-    when: not burp_installed.stat.exists
-    block:
+  - name: Download Burp Suite Pro installer
+    ansible.builtin.get_url:
+      url: "{{ burp_url }}"
+      dest: "/tmp/{{ burp_installer }}"
+      mode: '0755'
 
-    - name: Install dependencies
-      ansible.builtin.apt:
-        name:
-          - fontconfig
-          - libfreetype6
-          - libx11-6
-          - libxext6
-          - libxrender1
-          - libxtst6
-          - libxi6
-        state: present
-      become: true
+  - name: Create response file for unattended install
+    ansible.builtin.copy:
+      dest: /tmp/burp_response.varfile
+      mode: '0644'
+      content: |
+        sys.adminRights$Boolean=false
+        sys.installationDir={{ burp_install_dir }}
+        sys.languageId=en
+        sys.programGroupDisabled$Boolean=true
+    become: true
 
-    - name: Download Burp Suite Pro installer
-      ansible.builtin.get_url:
-        url: "{{ burp_url }}"
-        dest: "/tmp/{{ burp_installer }}"
-        mode: '0755'
+  - name: Run Burp Suite installer
+    ansible.builtin.command:
+      cmd: "/tmp/{{ burp_installer }} -q -varfile /tmp/burp_response.varfile"
+      creates: "{{ burp_install_dir }}/BurpSuitePro"
+    become: true
 
-    - name: Create response file for unattended install
-      ansible.builtin.copy:
-        dest: /tmp/burp_response.varfile
-        mode: '0644'
-        content: |
-          sys.adminRights$Boolean=false
-          sys.installationDir={{ burp_install_dir }}
-          sys.languageId=en
-          sys.programGroupDisabled$Boolean=true
-      become: true
+  - name: Create desktop entry
+    ansible.builtin.copy:
+      dest: /usr/share/applications/burpsuite-pro.desktop
+      mode: '0644'
+      content: |
+        [Desktop Entry]
+        Name=Burp Suite Pro
+        Exec={{ burp_install_dir }}/BurpSuitePro
+        Icon={{ burp_install_dir }}/.install4j/BurpSuitePro.png
+        Type=Application
+        Categories=Security;Network;
+    become: true
 
-    - name: Run Burp Suite installer
-      ansible.builtin.command:
-        cmd: "/tmp/{{ burp_installer }} -q -varfile /tmp/burp_response.varfile"
-        creates: "{{ burp_install_dir }}/BurpSuitePro"
-      become: true
+  - name: Symlink to /usr/local/bin
+    ansible.builtin.file:
+      src: "{{ burp_install_dir }}/BurpSuitePro"
+      dest: /usr/local/bin/burpsuite
+      state: link
+    become: true
 
-    - name: Create desktop entry
-      ansible.builtin.copy:
-        dest: /usr/share/applications/burpsuite-pro.desktop
-        mode: '0644'
-        content: |
-          [Desktop Entry]
-          Name=Burp Suite Pro
-          Exec={{ burp_install_dir }}/BurpSuitePro
-          Icon={{ burp_install_dir }}/.install4j/BurpSuitePro.png
-          Type=Application
-          Categories=Security;Network;
-      become: true
+  - name: Create Burp config directory
+    ansible.builtin.file:
+      path: "{{ ansible_env.HOME }}/.BurpSuite"
+      state: directory
+      mode: '0755'
 
-    - name: Symlink to /usr/local/bin
-      ansible.builtin.file:
-        src: "{{ burp_install_dir }}/BurpSuitePro"
-        dest: /usr/local/bin/burpsuite
-        state: link
-      become: true
+  - name: Cleanup installer
+    ansible.builtin.file:
+      path: "{{ item }}"
+      state: absent
+    loop:
+      - "/tmp/{{ burp_installer }}"
+      - /tmp/burp_response.varfile
 
-    - name: Create Burp config directory
-      ansible.builtin.file:
-        path: "{{ ansible_env.HOME }}/.BurpSuite"
-        state: directory
-        mode: '0755'
+  - name: Verify installation
+    ansible.builtin.command:
+      cmd: "{{ burp_install_dir }}/BurpSuitePro --version"
+    register: burp_version_check
+    changed_when: false
+    failed_when: false
 
-    - name: Cleanup installer
-      ansible.builtin.file:
-        path: "{{ item }}"
-        state: absent
-      loop:
-        - "/tmp/{{ burp_installer }}"
-        - /tmp/burp_response.varfile
-
-    - name: Verify installation
-      ansible.builtin.command:
-        cmd: "{{ burp_install_dir }}/BurpSuitePro --version"
-      register: burp_version_check
-      changed_when: false
-      failed_when: false
-
-    - name: Show installed version
-      ansible.builtin.debug:
-        msg: "Burp Suite Pro: {{ burp_version_check.stdout | default('installed') }}"
+  - name: Show installed version
+    ansible.builtin.debug:
+      msg: "Burp Suite Pro: {{ burp_version_check.stdout | default('installed') }}"

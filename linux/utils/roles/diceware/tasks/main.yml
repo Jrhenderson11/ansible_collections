@@ -1,0 +1,5 @@
+- name: Install diceware apt
+  ansible.builtin.apt:
+    name: diceware
+    state: latest
+  become: true

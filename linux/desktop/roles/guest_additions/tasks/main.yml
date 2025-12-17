@@ -1,0 +1,50 @@
+- name: Download VirtualBox Guest Additions ISO
+  get_url:
+    url: "https://download.virtualbox.org/virtualbox/{{ vbox_version }}/VBoxGuestAdditions_{{ vbox_version }}.iso"
+    dest: /tmp/VBoxGuestAdditions.iso
+    mode: '0644'
+
+- name: Install required packages
+  apt:
+    name:
+      - build-essential
+      - dkms
+      - linux-headers-{{ ansible_kernel }}
+    state: present
+    update_cache: yes
+
+- name: Create mount point
+  file:
+    path: /mnt/cdrom
+    state: directory
+    mode: '0755'
+
+- name: Mount Guest Additions ISO
+  mount:
+    path: /mnt/cdrom
+    src: /tmp/VBoxGuestAdditions.iso
+    fstype: iso9660
+    opts: loop,ro
+    state: mounted
+
+- name: Run Guest Additions installer
+  command: /mnt/cdrom/VBoxLinuxAdditions.run
+  register: result
+  failed_when: 
+    - result.rc != 0
+    - result.rc != 2  # Exit code 2 = some modules failed but core succeeded
+  changed_when: result.rc == 0
+
+- name: Unmount ISO
+  mount:
+    path: /mnt/cdrom
+    state: unmounted
+
+- name: Cleanup ISO
+  file:
+    path: /tmp/VBoxGuestAdditions.iso
+    state: absent
+
+- name: Reboot if needed
+  reboot:
+  when: result.rc == 0

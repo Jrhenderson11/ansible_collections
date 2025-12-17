@@ -1,7 +1,7 @@
 ---
 - name: Install UFW apt
   ansible.builtin.apt:
-    name: gping
+    name: ufw
     state: latest
   become: true
 - name: fw_config_default_deny

@@ -149,79 +149,11 @@ ZEBAR defender
 hide desktop apps
 
 
-# Linux:
- - fix background 
- - /home/james/.config/i3/custom_shell_start.sh
-dunst desktop
-blueman-applet
-
-zmap
-
-firefox extensions
-https://github.com/mozilla/policy-templates/blob/master/README.md
-
-```json
-{
-  "policies": {
-  	"FirefoxHome": {
-      "Search": true,
-      "TopSites": true,
-      "SponsoredTopSites": false,
-      "Highlights": false,
-      "Pocket": false,
-      "SponsoredPocket": false,
-      "Snippets": false,
-      "Locked": true
-    },
-    "ExtensionSettings": {
-      
-      "multi-account-containers@mozilla"
-      "uBlock0@raymondhill.net": {
-        "installation_mode": "force_installed",
-        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi"
-      },
-      "adguardadblocker@adguard.com": {
-        "installation_mode": "force_installed",
-        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/adguardadblocker@adguard.com/latest.xpi"
-      },
-      "https-everywhere@eff.org": {
-        "installation_mode": "allowed",
-        "updates_disabled": false
-      }
-    }
-  }
-}
-```
-
 # windows
 
 https://community.chocolatey.org/packages/Sudo
 sudo config --enable inline
 
-# linux
-
-az cli
-
-tldr
-powerline prompt
-time in prompt
-
-trufflehog
-
-iw
-hackrf radio
-urh
-aircrack
-
-hotspot?
-
-crunch
-pywerview
-chisel
-
-## C2
-havok / sliver: https://github.com/MEhrn00/ansible-role-sliver
-mythic: https://github.com/MEhrn00/ansible-role-mythic
 
 ## Windows
 PECloak
@@ -279,25 +211,82 @@ C:\WIndows\OEM\TaskbarLayoutModification.xml
 ```
 
 
+
+# Linux:
+ - fix background 
+ - /home/james/.config/i3/custom_shell_start.sh
+blueman-applet
+
+zmap
+
+firefox extensions
+https://github.com/mozilla/policy-templates/blob/master/README.md
+
+```json
+{
+  "policies": {
+    "FirefoxHome": {
+      "Search": true,
+      "TopSites": true,
+      "SponsoredTopSites": false,
+      "Highlights": false,
+      "Pocket": false,
+      "SponsoredPocket": false,
+      "Snippets": false,
+      "Locked": true
+    },
+    "ExtensionSettings": {
+      
+      "multi-account-containers@mozilla"
+      "uBlock0@raymondhill.net": {
+        "installation_mode": "force_installed",
+        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi"
+      },
+      "adguardadblocker@adguard.com": {
+        "installation_mode": "force_installed",
+        "install_url": "https://addons.mozilla.org/firefox/downloads/latest/adguardadblocker@adguard.com/latest.xpi"
+      },
+      "https-everywhere@eff.org": {
+        "installation_mode": "allowed",
+        "updates_disabled": false
+      }
+    }
+  }
+}
+```
+
+az cli
+
+tldr
+powerline prompt
+time in prompt
+
+trufflehog
+
+iw
+hackrf radio
+urh
+aircrack
+
+hotspot?
+
+crunch
+pywerview
+chisel
+
+## C2
+havok / sliver: https://github.com/MEhrn00/ansible-role-sliver
+mythic: https://github.com/MEhrn00/ansible-role-mythic
+
 Terminal:
 
 $$
 
-diceware
 https://github.com/mermaid-js/mermaid-cli
-hcxtools
-macchanger
 python3-virtualenv
-hydra (pw-inspector)
-
-AALIASES:
-https://github.com/dandavison/delta
 
 avred
 yetanotherobfuscator
-
 ilspy
-dnspi
+dnspy
 yara
-
-https://github.com/kobake/mlocate32

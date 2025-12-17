@@ -64,3 +64,7 @@
      tags: net-tools
    - role: hextools
      tags: hextools
+   - role: diceware
+     tags: diceware
+   - role: delta
+     tags: delta

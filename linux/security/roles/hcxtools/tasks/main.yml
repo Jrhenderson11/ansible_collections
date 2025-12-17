@@ -1,0 +1,5 @@
+- name: Install hcxtools apt
+  ansible.builtin.apt:
+    name: hcxtools
+    state: latest
+  become: true

@@ -37,4 +37,7 @@
      tags: semgrep
    - role: web_tools
      tags: web_tools
-
+   - role: macchanger
+     tags: macchanger
+   - role: hcxtools
+     tags: hcxtools

@@ -35,3 +35,5 @@
      tags: misc_tools
    - role: git_config
      tags: git_config
+   - role: guest_additions
+     tags: guest_additions

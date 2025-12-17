@@ -1,0 +1,5 @@
+- name: Install macchanger apt
+  ansible.builtin.apt:
+    name: macchanger
+    state: latest
+  become: true

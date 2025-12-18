@@ -3,6 +3,7 @@
   shell: command -v rr
   ignore_errors: true
   register: rr_exist
+  failed_when: false
 
 - name: Install Dependencies
   when: rr_exist.rc != 0
@@ -25,6 +26,7 @@
       - capnproto
       - libcapnp-dev
       - zlib1g-dev
+      - libzstd-dev
   become: true
 
 - name: Make /tools/reversing/rr
@@ -43,8 +45,11 @@
 
 - name: mkdir obj/
   when: rr_exist.rc != 0
-  command: mkdir obj
   ignore_errors: true
+  failed_when: false
+  shell: mkdir obj
+  args:
+    chdir: /tools/reversing/rr
 
 - name: cmake
   when: rr_exist.rc != 0

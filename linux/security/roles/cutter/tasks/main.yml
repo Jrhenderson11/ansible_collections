@@ -1,4 +1,13 @@
 ---
+- name: check installed
+  shell: ls /tools/reversing/cutter | grep AppImage
+  ignore_errors: true
+  register: cutter_exist
+  failed_when: false
+
+- name: Install cutter
+  when: cutter_exist.rc != 0
+  block:
   - name: Make /tools/reversing/cutter
     file:
         path: /tools/reversing/cutter
@@ -13,3 +22,12 @@
 
   - name: Make Executable
     shell: chmod +x /tools/reversing/cutter/Cutter*.AppImage
+
+  - name: Add tools dir to PATH in zshrc
+    ansible.builtin.blockinfile:
+      path: "{{ ansible_env.HOME }}/.zshrc"
+      marker: "# {mark} cutter"
+      block: |
+        alias cutter-re='nohup /tools/reversing/cutter/Cutter-v2.3.4-Linux-x86_64.AppImage >/dev/null 2>&1 &'
+
+      create: true

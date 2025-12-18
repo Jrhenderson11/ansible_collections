@@ -3,7 +3,7 @@
 
 - name: Check if Binary Ninja already installed
   ansible.builtin.stat:
-    path: "{{ ansible_user_dir }}/binaryninja"
+    path: "/opt/binaryninja"
   register: binja_installed
 
 - name: Install Binary Ninja

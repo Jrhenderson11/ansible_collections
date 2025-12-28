@@ -105,7 +105,11 @@ function mkrole() {
 ## todo
 
 Linux:
-
+ - python-is-python3
+ - fix background 
+ - /home/james/.config/i3/custom_shell_start.sh
+ - blueman-applet
+ - zmap
  - VM:
   - work gitconfig
  - Laptop:
@@ -114,7 +118,7 @@ Linux:
   - screen lock <- i3
   - nordvpn < - nordvpn
   - wifi tools
-  - adio tools
+  - radio tools
 
 - log.sh in home
 
@@ -213,11 +217,6 @@ C:\WIndows\OEM\TaskbarLayoutModification.xml
 
 
 # Linux:
- - fix background 
- - /home/james/.config/i3/custom_shell_start.sh
-blueman-applet
-
-zmap
 
 firefox extensions
 https://github.com/mozilla/policy-templates/blob/master/README.md
@@ -255,18 +254,21 @@ https://github.com/mozilla/policy-templates/blob/master/README.md
 }
 ```
 
-az cli
+ - az cli
 
 tldr
-powerline prompt
-time in prompt
+ - powerline prompt?
+ - time in prompt
 
-trufflehog
+ - trufflehog
 
-iw
-hackrf radio
-urh
-aircrack
+wifi:
+ - iw
+ - aircrack
+radio:
+ - hackrf radio
+ - urh
+
 
 hotspot?
 
@@ -278,9 +280,6 @@ chisel
 havok / sliver: https://github.com/MEhrn00/ansible-role-sliver
 mythic: https://github.com/MEhrn00/ansible-role-mythic
 
-Terminal:
-
-$$
 
 https://github.com/mermaid-js/mermaid-cli
 python3-virtualenv

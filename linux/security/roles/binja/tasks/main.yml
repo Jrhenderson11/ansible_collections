@@ -75,3 +75,12 @@
 - name: Show status
   ansible.builtin.debug:
     msg: "Binary Ninja: {{ 'installed' if binja_version.rc == 0 else 'install may need manual license acceptance' }}"
+
+
+- name: Add to PATH in zshrc
+  ansible.builtin.blockinfile:
+    path: "{{ ansible_env.HOME }}/.zshrc"
+    marker: "# {mark} JOHN"
+    block: |
+      export PATH="/tools/passwords/johnj/:$PATH"
+    create: true

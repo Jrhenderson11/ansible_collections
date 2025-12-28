@@ -41,3 +41,5 @@
      tags: macchanger
    - role: hcxtools
      tags: hcxtools
+   - role: remove_vagrant
+     tags: remove_vagrant

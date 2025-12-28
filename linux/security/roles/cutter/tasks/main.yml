@@ -1,33 +1,89 @@
 ---
-- name: check installed
-  shell: ls /tools/reversing/cutter | grep AppImage
-  ignore_errors: true
-  register: cutter_exist
-  failed_when: false
+- name: Install Rizin from source
+  become: yes
+  bock:  
+    - name: Install build dependencies
+      apt:
+        name:
+          - git
+          - build-essential
+          - cmake
+          - meson
+          - ninja-build
+          - pkg-config
+          - libssl-dev
+          - libzip-dev
+          - libzstd-dev
+          - liblz4-dev
+          - libcapstone-dev
+          - libmagic-dev
+          - python3-pip
+        state: present
+        update_cache: yes
 
+    - name: Clone Rizin repository
+      git:
+        repo: https://github.com/rizinorg/rizin.git
+        dest: /tmp/rizin
+        version: "{{ rizin_version }}"
+        depth: 1
+
+    - name: Configure Rizin with Meson
+      command: meson setup build --prefix={{ rizin_install_prefix }}
+      args:
+        chdir: /tmp/rizin
+        creates: /tmp/rizin/build/build.ninja
+
+    - name: Build Rizin
+      command: ninja -C build
+      args:
+        chdir: /tmp/rizin
+
+    - name: Install Rizin
+      command: ninja -C build install
+      args:
+        chdir: /tmp/rizin
+
+    - name: Update shared library cache
+      command: ldconfig
+
+    - name: Clean up build directory
+      file:
+        path: /tmp/rizin
+        state: absent
+
+    - name: Verify installat
 - name: Install cutter
-  when: cutter_exist.rc != 0
   block:
-  - name: Make /tools/reversing/cutter
-    file:
-        path: /tools/reversing/cutter
-        state: directory
-        owner: "{{ ansible_user_id }}"
-        group: "{{ ansible_user_id }}"
+  - name: check installed
+    shell: ls /tools/reversing/cutter | grep AppImage
+    ignore_errors: true
+    register: cutter_exist
+    failed_when: false
 
-  - name: Download Cutter
-    get_url: 
-      url: https://github.com/rizinorg/cutter/releases/download/v2.3.4/Cutter-v2.3.4-Linux-x86_64.AppImage
-      dest: /tools/reversing/cutter
+  - name: Install cutter
+    when: cutter_exist.rc != 0
+    block:
+    - name: Make /tools/reversing/cutter
+      file:
+          path: /tools/reversing/cutter
+          state: directory
+          owner: "{{ ansible_user_id }}"
+          group: "{{ ansible_user_id }}"
 
-  - name: Make Executable
-    shell: chmod +x /tools/reversing/cutter/Cutter*.AppImage
+    - name: Download Cutter
+      get_url: 
+        url: https://github.com/rizinorg/cutter/releases/download/v2.3.4/Cutter-v2.3.4-Linux-x86_64.AppImage
+        dest: /tools/reversing/cutter
 
-  - name: Add tools dir to PATH in zshrc
-    ansible.builtin.blockinfile:
-      path: "{{ ansible_env.HOME }}/.zshrc"
-      marker: "# {mark} cutter"
-      block: |
-        alias cutter-re='nohup /tools/reversing/cutter/Cutter-v2.3.4-Linux-x86_64.AppImage >/dev/null 2>&1 &'
+    - name: Make Executable
+      shell: chmod +x /tools/reversing/cutter/Cutter*.AppImage
 
-      create: true
+    - name: Add tools dir to PATH in zshrc
+      ansible.builtin.blockinfile:
+        path: "{{ ansible_env.HOME }}/.zshrc"
+        marker: "# {mark} cutter"
+        block: |
+          alias cutter-re='nohup /tools/reversing/cutter/Cutter-v2.3.4-Linux-x86_64.AppImage >/dev/null 2>&1 &'
+
+        create: true

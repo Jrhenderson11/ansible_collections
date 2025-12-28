@@ -12,20 +12,32 @@
       - linux-headers-{{ ansible_kernel }}
     state: present
     update_cache: yes
+  become: true
+
+
+- name: Check if mount exists 
+  stat:
+    path: /mnt/cdrom/VBoxLinuxAdditions.run
+  register: already_mounted
+  ignore_errors: true
 
 - name: Create mount point
+  when: already_mounted == 0
   file:
     path: /mnt/cdrom
     state: directory
     mode: '0755'
+  become: true
 
 - name: Mount Guest Additions ISO
+  when: already_mounted == 0
   mount:
     path: /mnt/cdrom
     src: /tmp/VBoxGuestAdditions.iso
     fstype: iso9660
     opts: loop,ro
     state: mounted
+  become: true
 
 - name: Run Guest Additions installer
   command: /mnt/cdrom/VBoxLinuxAdditions.run
@@ -34,17 +46,53 @@
     - result.rc != 0
     - result.rc != 2  # Exit code 2 = some modules failed but core succeeded
   changed_when: result.rc == 0
+  become: true
 
 - name: Unmount ISO
   mount:
     path: /mnt/cdrom
     state: unmounted
+  become: true
 
 - name: Cleanup ISO
   file:
     path: /tmp/VBoxGuestAdditions.iso
     state: absent
 
+- name: Create VBoxClient systemd service
+  copy:
+    dest: /etc/systemd/system/vboxclient.service
+    mode: '0644'
+    content: |
+      [Unit]
+      Description=VirtualBox Guest Additions Client Services
+      After=display-manager.service
+      ConditionVirtualization=oracle
+
+      [Service]
+      Type=forking
+      ExecStart=/usr/bin/VBoxClient --clipboard
+      ExecStart=/usr/bin/VBoxClient --draganddrop
+      ExecStart=/usr/bin/VBoxClient --seamless
+      ExecStart=/usr/bin/VBoxClient --display
+      ExecStart=/usr/bin/VBoxClient --vmsvga
+      Restart=on-failure
+      User={{ ansible_user_id }}
+      Environment=DISPLAY=:0
+
+      [Install]
+      WantedBy=graphical.target
+  become: true
+
+- name: Enable and start VBoxClient service
+  systemd:
+    name: vboxclient
+    enabled: true
+    state: started
+    daemon_reload: true
+  become: true
+
 - name: Reboot if needed
   reboot:
   when: result.rc == 0
+

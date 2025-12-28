@@ -8,7 +8,28 @@
 
 - name: history remove-duplicates
   copy:
-    content: "set history remove-duplicates"
+    content: |
+set history remove-duplicates unlimited
+set vmmap-prefer-relpaths off
+set startup-quietly on
+set startup-with-shell off
+source /home/hendo/tools/pwndbg/gdbinit.py
+
+define xslice
+    set $ptr = $rax
+    set $len = $rbx
+    eval "x/%dxb $ptr", $len
+end
+
+define goargs
+    printf "arg1 (RAX): 0x%lx\n", $rax
+    printf "arg2 (RBX): 0x%lx\n", $rbx
+    printf "arg3 (RCX): 0x%lx\n", $rcx
+    printf "arg4 (RDI): 0x%lx\n", $rdi
+    printf "arg5 (RSI): 0x%lx\n", $rsi
+    printf "arg6 (R8):  0x%lx\n", $r8
+end
+
     dest: "{{ ansible_user_dir }}/.gdbinit"
 
 - name: Download PWNDBG

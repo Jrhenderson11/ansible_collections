@@ -1,33 +1,51 @@
 ---
-- name: Install Dependencies
-  ansible.builtin.apt:
-    update_cache: true
-    state: latest
-    pkg:
-      - libssl-dev
-      - openssl
-      - libnss3-dev
-      - libkrb5-dev
-      - libgmp-dev
-      - zlib1g-dev
-      - libbz2-dev
-  become: true
+- name: Check if installed 
+  stat:
+    path: /tools/passwords/johnj/run
+  register: already_mounted
+  ignore_errors: true
 
-- name: Download Source
-  git:
-    repo: https://github.com/openwall/john.git
-    dest: /tools/passwords/johnj
+- name: Install
+  when: already_mounted == 0
+  block:
+    
+  - name: Install Dependencies
+    ansible.builtin.apt:
+      update_cache: true
+      state: latest
+      pkg:
+        - libssl-dev
+        - openssl
+        - libnss3-dev
+        - libkrb5-dev
+        - libgmp-dev
+        - zlib1g-dev
+        - libbz2-dev
+    become: true
 
-- name: Configure
-  command: sh ./configure
-  args:
-    chdir: /tools/passwords/johnj/src
+  - name: Download Source
+    git:
+      repo: https://github.com/openwall/john.git
+      dest: /tools/passwords/johnj
 
-- name: Make
-  community.general.make:
-    chdir: /tools/passwords/johnj/src
-    target: install
-    jobs: 4
-    params: 
-      -s:
-  become: true
+  - name: Configure
+    command: sh ./configure
+    args:
+      chdir: /tools/passwords/johnj/src
+
+  - name: Make
+    community.general.make:
+      chdir: /tools/passwords/johnj/src
+      target: install
+      jobs: 4
+      params: 
+        -s:
+    become: true
+
+  - name: Add to PATH in zshrc
+    ansible.builtin.blockinfile:
+      path: "{{ ansible_env.HOME }}/.zshrc"
+      marker: "# {mark} JOHN"
+      block: |
+        export PATH="/tools/passwords/johnj/:$PATH"
+      create: true

@@ -1,0 +1,29 @@
+---
+- name: check if curlie is installed
+  shell: command -v curlie
+  register: curlie_exists
+  ignore_errors: true
+  failed_when: false
+  changed_when: false
+
+# golang task writes path to /etc/environment, nly srcd on new SSH connectin
+- name: Reset SSH connection to pick up new environment
+  ansible.builtin.meta: reset_connection
+
+- name: install
+  when: duf_exists.rc != 0
+  block:
+  - name: Download curlie source
+    git:
+      repo: git@github.com:rs/curlie.git
+      dest: "{{ tmp_dir }}"
+
+  - name: build
+    ansible.builtin.command: go build
+    args:
+      chdir: "{{ tmp_dir }}"
+
+  - name: install
+    ansible.builtin.command: go install
+    args:
+      chdir: "{{ tmp_dir }}"

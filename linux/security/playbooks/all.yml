@@ -43,3 +43,5 @@
      tags: hcxtools
    - role: remove_vagrant
      tags: remove_vagrant
+   - role: cloud_tools
+     tags: cloud_tools

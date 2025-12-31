@@ -105,22 +105,49 @@ function mkrole() {
 ## todo
 
 Linux:
- - python-is-python3
- - fix background 
- - /home/james/.config/i3/custom_shell_start.sh
- - blueman-applet
- - zmap
- - VM:
-  - work gitconfig
- - Laptop:
-  - pgup/down <- i3 / inputrc?
-  - inputkeys for vol <- i3
-  - screen lock <- i3
-  - nordvpn < - nordvpn
-  - wifi tools
-  - radio tools
+    - config
+        - bindsym $mod+x exec python3.10 $HOME/tools/transformer/transformer.py > /tmp/transformer.log 2>&1 
+        - fix background 
+        - /home/james/.config/i3/custom_shell_start.sh
+    - tools
+        - log.sh in home
+        - blueman-applet
+        - zmap
+        tldr
+         - powerline prompt?
+         - time in prompt
 
-- log.sh in home
+         - trufflehog
+
+        wifi:
+         - iw
+         - aircrack
+        radio:
+         - hackrf radio
+         - urh
+         - hotspot?
+
+        crunch
+        pywerview
+        chisel
+
+
+ - laptop v vm
+     - VM:
+     - Laptop:
+      - pgup/down <- i3 / inputrc?
+      - inputkeys for vol <- i3
+      - screen lock <- i3
+      - nordvpn < - nordvpn
+      - wifi tools
+      - radio tools
+    - work v home:
+      - work gitconfig
+        - tailscale
+
+
+
+# windows
 
 with profile:
 Install-Module -Name PSReadLine -Force -SkipPublisherCheck
@@ -152,8 +179,6 @@ ZEBAR defender
 
 hide desktop apps
 
-
-# windows
 
 https://community.chocolatey.org/packages/Sudo
 sudo config --enable inline
@@ -253,28 +278,6 @@ https://github.com/mozilla/policy-templates/blob/master/README.md
   }
 }
 ```
-
- - az cli
-
-tldr
- - powerline prompt?
- - time in prompt
-
- - trufflehog
-
-wifi:
- - iw
- - aircrack
-radio:
- - hackrf radio
- - urh
-
-
-hotspot?
-
-crunch
-pywerview
-chisel
 
 ## C2
 havok / sliver: https://github.com/MEhrn00/ansible-role-sliver

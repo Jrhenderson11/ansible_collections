@@ -70,3 +70,11 @@
      tags: delta
    - role: curlie
      tags: curlie
+   - role: tree
+     tags: tree
+   - role: transformer
+     tags: transformer
+   - role: az_cli
+     tags: az_cli
+   - role: aws_cli
+     tags: aws_cli

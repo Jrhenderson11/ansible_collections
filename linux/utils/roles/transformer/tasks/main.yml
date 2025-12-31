@@ -1,0 +1,33 @@
+- name: Clone transformer repo locally
+  ansible.builtin.git:
+    repo: git@github.com:Jrhenderson11/transformer.git
+    dest: /tmp/misc_tool
+    version: master
+  delegate_to: localhost
+  run_once: true
+
+- name: Copy repo to server
+  ansible.builtin.copy:
+    src: /tmp/misc_tool/
+    dest: "{{ ansible_user_dir }}/tools/transformer"
+
+- name: Install requirements from file
+  pip:
+    requirements: "{{ ansible_user_dir }}/tools/transformer/requirements.txt"
+
+- name: xdotool_apt
+  ansible.builtin.apt:
+    name:
+      - xdotool
+    state: present
+    update_cache: true
+  become: true
+
+
+
+- name: Cleanup local clone
+  ansible.builtin.file:
+    path: /tmp/misc_tool
+    state: absent
+  delegate_to: localhost
+  run_once: true

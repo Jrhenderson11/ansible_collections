@@ -1,0 +1,13 @@
+---
+- name: Create tools directory
+  file:
+    path: "{{ ansible_env.HOME }}/tools/cloud"
+    state: directory
+    mode: '0755'
+
+- name: Install Azure CLI
+  become: yes
+  shell: |
+    curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+  args:
+    creates: /usr/bin/az

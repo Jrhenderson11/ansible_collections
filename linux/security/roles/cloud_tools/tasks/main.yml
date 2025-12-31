@@ -1,0 +1,64 @@
+
+# Prowler
+- name: Clone Prowler
+  git:
+    repo: https://github.com/prowler-cloud/prowler.git
+    dest: "{{ ansible_env.HOME }}/tools/cloud/prowler"
+    depth: 1
+
+- name: Install Prowler dependencies
+  pip:
+    requirements: "{{ ansible_env.HOME }}/tools/cloud/prowler/requirements.txt"
+    extra_args: --break-system-packages
+
+# Podman
+- name: Install Podman
+  become: yes
+  apt:
+    name: podman
+    state: present
+    update_cache: yes
+
+# Neo4j container
+- name: Pull Neo4j container
+  containers.podman.podman_image:
+    name: docker.io/library/neo4j
+    tag: latest
+
+# Poetry
+- name: Check if Poetry is installed
+  command: which poetry
+  register: poetry_check
+  ignore_errors: yes
+  changed_when: false
+
+- name: Install Poetry
+  shell: |
+    curl -sSL https://install.python-poetry.org | python3 -
+  when: poetry_check.rc != 0
+
+# IAMSpy
+- name: Clone IAMSpy
+  git:
+    repo: https://github.com/WithSecureLabs/IAMSpy.git
+    dest: "{{ ansible_env.HOME }}/tools/cloud/IAMSpy"
+    depth: 1
+
+- name: Install IAMSpy with Poetry
+  shell: |
+    cd {{ ansible_env.HOME }}/tools/cloud/IAMSpy && {{ ansible_env.HOME }}/.local/bin/poetry install
+  args:
+    creates: "{{ ansible_env.HOME }}/tools/cloud/IAMSpy/.venv"
+
+# IAMGraph
+- name: Clone IAMGraph
+  git:
+    repo: https://github.com/WithSecureLabs/IAMGraph.git
+    dest: "{{ ansible_env.HOME }}/tools/cloud/IAMGraph"
+    depth: 1
+
+- name: Install IAMGraph with Poetry
+  shell: |
+    cd {{ ansible_env.HOME }}/tools/cloud/IAMGraph && {{ ansible_env.HOME }}/.local/bin/poetry install
+  args:
+    creates: "{{ ansible_env.HOME }}/tools/cloud/IAMGraph/.venv"

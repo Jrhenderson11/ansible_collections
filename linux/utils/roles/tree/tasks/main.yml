@@ -1,0 +1,7 @@
+- name: tree_apt
+  ansible.builtin.apt:
+    name:
+      - tree
+    state: present
+    update_cache: true
+  become: true

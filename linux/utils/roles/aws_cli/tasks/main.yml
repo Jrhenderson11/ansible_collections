@@ -26,3 +26,11 @@
 - name: Install AWS CLI
   command: /tmp/aws/install --install-dir {{ ansible_env.HOME }}/tools/cloud/aws-cli --bin-dir {{ ansible_env.HOME }}/.local/bin --update
   when: aws_check.rc != 0
+
+- name: Set AWS CLI pager to off
+  ansible.builtin.lineinfile:
+    path: "{{ ansible_env.HOME }}/.aws/config"
+    line: "cli_pager="
+    regexp: "^cli_pager="
+    create: yes
+    mode: '0600'

@@ -105,6 +105,7 @@ function mkrole() {
 ## todo
 
 Linux:
+echo -e "[default]\ncli_pager=" >> ~/.aws/config
     - config
         - bindsym $mod+x exec python3.10 $HOME/tools/transformer/transformer.py > /tmp/transformer.log 2>&1 
         - fix background 

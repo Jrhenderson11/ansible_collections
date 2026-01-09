@@ -5,3 +5,4 @@ roles:
 collections:
   - chocolatey.chocolatey
   - community.general
+  - containers.podman

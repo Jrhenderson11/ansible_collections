@@ -71,13 +71,9 @@
 
       [Service]
       Type=forking
-      ExecStart=/usr/bin/VBoxClient --clipboard
-      ExecStart=/usr/bin/VBoxClient --draganddrop
-      ExecStart=/usr/bin/VBoxClient --seamless
-      ExecStart=/usr/bin/VBoxClient --display
-      ExecStart=/usr/bin/VBoxClient --vmsvga
+      ExecStart=/usr/bin/VBoxClient-all
       Restart=on-failure
-      User={{ ansible_user_id }}
+      User={{ ansible_user }}
       Environment=DISPLAY=:0
 
       [Install]

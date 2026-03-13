@@ -1,0 +1,31 @@
+- name: Install proxychains-ng
+  block:
+    - name: Clone proxychains-ng repository
+      ansible.builtin.git:
+        repo: https://github.com/rofl0r/proxychains-ng
+        dest: /tmp/proxychains-ng
+        depth: 1
+
+    - name: Configure build
+      ansible.builtin.command:
+        cmd: ./configure --prefix=/usr --sysconfdir=/etc
+        chdir: /tmp/proxychains-ng
+        creates: /tmp/proxychains-ng/Makefile
+
+    - name: Build
+      ansible.builtin.make:
+        chdir: /tmp/proxychains-ng
+
+    - name: Install binaries
+      ansible.builtin.make:
+        chdir: /tmp/proxychains-ng
+        target: install
+      become: true
+
+    - name: Install default config
+      ansible.builtin.make:
+        chdir: /tmp/proxychains-ng
+        target: install-config
+      become: true
+      args:
+        creates: /etc/proxychains.conf

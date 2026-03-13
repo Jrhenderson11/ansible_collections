@@ -47,3 +47,29 @@ OPENSSH_SERVER_WINDOWS_CAPABILITY_NAME: 'OpenSSH.Server~~~~0.0.1.0'
   loop:
   - { name: sshd }
   - { name: ssh-agent}
+
+# write stub in user 
+
+- name: Ensure administrators_authorized_keys has correct ownership and permissions
+  block:
+    - name: Disable ACL inheritance
+      ansible.windows.win_acl_inheritance:
+        path: C:\ProgramData\ssh\administrators_authorized_keys
+        reorganize: false
+        state: absent
+
+    - name: Grant SYSTEM full control
+      ansible.windows.win_acl:
+        path: C:\ProgramData\ssh\administrators_authorized_keys
+        user: NT AUTHORITY\SYSTEM
+        rights: FullControl
+        type: allow
+        state: present
+
+    - name: Grant Administrators full control
+      ansible.windows.win_acl:
+        path: C:\ProgramData\ssh\administrators_authorized_keys
+        user: BUILTIN\Administrators
+        rights: FullControl
+        type: allow
+        state: present

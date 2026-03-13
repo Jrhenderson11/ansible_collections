@@ -1,0 +1,10 @@
+- name: Add SSH config entry
+  blockinfile:
+    path: ~/.ssh/config
+    create: yes
+    mode: '0600'
+    marker: "# {mark} ANSIBLE MANAGED"
+    block: |
+      # Host example
+      #    IdentityFile ~/.ssh/example.priv
+      #    User example

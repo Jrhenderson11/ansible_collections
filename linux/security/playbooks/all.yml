@@ -45,3 +45,6 @@
      tags: remove_vagrant
    - role: cloud_tools
      tags: cloud_tools
+
+   - role: proxychains
+     tags: proxychains

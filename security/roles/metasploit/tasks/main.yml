@@ -1,0 +1,5 @@
+---
+- name: metasploit
+  community.general.snap:
+    name: metasploit-framework
+  become: true

@@ -1,0 +1,4 @@
+---
+- name: ldapdomaindump
+  community.general.pipx:
+    name: ldapdomaindump

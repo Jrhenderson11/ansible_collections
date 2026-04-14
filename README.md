@@ -104,6 +104,18 @@ function mkrole() {
 
 ## todo
 
+=======
+security:
+  crunch
+  chisel
+
+windows_tools:
+  smbmap etc
+  bloodhound.py
+  pywerview
+  ldapdomaindump
+
+
 Linux:
 proxychains
 isc-dhcp-client
@@ -170,6 +182,9 @@ Set-PSReadLineOption -Colors @{ InlinePrediction = "$([char]0x1b)[90m" } # Gray 
 ```
 $settingsPath = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminalPreview_8wekyb3d8bbwe\LocalState\settings.json"
 $settings = Get-Content -Path $settingsPath -Raw | ConvertFrom-Json
+
+sliver
+
 
 $newKeyBinding = @{
     command = "closeTab"

@@ -1,0 +1,4 @@
+---
+- name: prowler
+  community.general.pipx:
+    name: prowler

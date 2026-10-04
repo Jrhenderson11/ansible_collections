@@ -51,6 +51,8 @@
      tags: customize_lock_screen
    - role: hide_icons
      tags: hide_icons
+   - role: dark_mode
+     tags: dark_mode
    - role: customize_explorer
      tags: customize_explorer
    - role: powershell_profile

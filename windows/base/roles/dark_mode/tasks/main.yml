@@ -1,0 +1,9 @@
+  - name: Dark mode for taskbar and apps
+    ansible.windows.win_regedit:
+      path: HKCU:\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize
+      name: "{{ item }}"
+      data: 0
+      type: dword
+    loop:
+      - SystemUsesLightTheme
+      - AppsUseLightTheme

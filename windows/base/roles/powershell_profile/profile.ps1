@@ -36,21 +36,32 @@ Set-PSReadLineKeyHandler -Chord 'Enter' -ScriptBlock {
     [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
 }
 
+function ffg {
+    param([Parameter(Mandatory)][string]$Pattern)
+    $root = (Get-Location).ProviderPath.TrimEnd('\')
+    Get-ChildItem -Recurse -Force -ErrorAction SilentlyContinue |
+        ForEach-Object { '.' + $_.FullName.Substring($root.Length) } |
+        Where-Object { $_ -cmatch $Pattern }
+}
+
+
+
 # update path:
 $env:Path += ';$HOME\Appdata\Local\programs\Python\python312\;'
 $env:Path += ';C:\msys64\mingw64\lib\python3.10\site-packages'
 $env:Path += ';$HOME\Appdata\Local\FlowLauncher\;'
 
-$env:Path += ';C:\msys64\usr\bin'
-$env:Path += ';C:\msys64\usr\local\bin'
-$env:Path += ';C:\msys64\bin'
-$env:Path += ';C:\msys64\opt\bin'
-$env:Path += ';C:\msys64\mingw64\bin'
+$env:Path += ';C:\tools\msys64\usr\bin'
+$env:Path += ';C:\tools\msys64\usr\local\bin'
+$env:Path += ';C:\tools\msys64\bin'
+$env:Path += ';C:\tools\msys64\opt\bin'
+$env:Path += ';C:\tools\msys64\mingw64\bin'
+alias find "C:\tools\msys64\usr\bin\find.exe"
 
 # Aliases
 New-Alias s "C:\Program Files\Sublime Text 3\subl.exe"
 New-ALias which where.exe
 New-Alias xxd format-hex
 New-Alias f explorer.exe
-New-Alias gcl git clone
+function gcl { git clone @args }
 git config --global alias.sta status

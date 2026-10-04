@@ -7,3 +7,11 @@
   ansible.windows.win_copy:
     src: ./profile.ps1
     dest: '{{ ansible_user_dir }}\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1'
+
+- name: Install PSReadline
+  ansible.windows.powershell:
+    script: Install-Module PSReadLine -Force -Confirm:$False
+
+- name: Enable scripts
+  ansible.windows.powershell:
+    script: Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope LocalMachine

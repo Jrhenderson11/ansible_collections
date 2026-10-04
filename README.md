@@ -232,10 +232,6 @@ ghostpack? obfuscated?
 
  - uses inbuilt providers +js written bars: hard
 
-### msys64 tools?
-
-https://www.msys2.org/
-https://packages.msys2.org/base
 
 
 {{ ansible_user_dir }}/.glzr/zebar

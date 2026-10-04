@@ -1,0 +1,6 @@
+ - name: Hide desktop icons
+    ansible.windows.win_regedit:
+      path: HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced
+      name: HideIcons
+      data: 1
+      type: dword

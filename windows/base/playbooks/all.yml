@@ -17,7 +17,7 @@
      tags: choco
    - role: winget
      tags: winget
-   - role: dotnet
+   - role: dotnet2
      tags: dotnet
    - role: sublime
      tags: sublime
@@ -25,8 +25,9 @@
      tags: vscode
    - role: vsstudio
      tags: vsstudio
-   - role: terminal
-     tags: terminal
+   # not needed  
+   # - role: terminal
+   #   tags: terminal
    - role: firefox
      tags: firefox
    - role: git
@@ -48,6 +49,8 @@
      # Customisations
    - role: customize_lock_screen
      tags: customize_lock_screen
+   - role: hide_icons
+     tags: hide_icons
    - role: customize_explorer
      tags: customize_explorer
    - role: powershell_profile

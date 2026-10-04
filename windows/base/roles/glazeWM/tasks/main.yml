@@ -1,4 +1,4 @@
-- name: Install Zebar
+- name: Download Zebar MSI
   ansible.windows.win_shell: |
     Invoke-WebRequest -Uri https://github.com/glzr-io/zebar/releases/download/v2.7.0/zebar-v2.7.0-opt1-x64.msi -OutFile '{{ ansible_user_dir }}/Downloads/zebar.msi'
 
@@ -7,11 +7,8 @@
   ignore_errors: yes
   ansible.windows.win_package:
     provider: msi
-    path: '{{ ansible_user_dir }}/Downloads/zebar.msi'
+    path: '{{ ansible_user_dir }}\\Downloads\\zebar.msi'
     state: present
-
-
-
 
 - name: Install Glaze
   win_chocolatey:

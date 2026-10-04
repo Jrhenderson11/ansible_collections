@@ -22,8 +22,10 @@ Each collection has an `all.yml` playbook which installs all roles
  - root/Administrator permisions on target system
 
 Ansible galaxy requirements:
-`ansible-galaxy install -r requirements.yml`
-
+```sh
+sudo apt install ansible-core
+ansible-galaxy install -r requirements.yml
+```
 
 ## Install local collections
 
@@ -44,8 +46,8 @@ ansible-galaxy collection install ./malware
 ```sh
 
 # Check inventory
-ansible --list-hosts -i localhost
-ansible-playbook foo.yml --check
+ansible --list-hosts -i localhost all
+# ansible-playbook foo.yml --check
 
 # Run playbook
 # ansible-playbook -i <inventory> <namespace.collection.playbook> <subgroup_of_inventory>

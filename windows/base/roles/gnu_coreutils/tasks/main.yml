@@ -8,5 +8,3 @@
   ansible.windows.win_path:
     elements:
       - 'C:\Program Files (x86)\GnuWin32\bin'
-
-'
